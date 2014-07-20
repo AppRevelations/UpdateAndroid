@@ -1,0 +1,76 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+    	android:padding="20dp"
+    	android:background="#ffffff"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+        	android:padding="20dp"
+        	android:gravity="center"
+        	android:layout_marginTop="15dp"
+        	android:background="#F7F7F7" >
+            
+            <EditText
+        	    android:id="@+id/editText1"
+	            android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:padding="10dp"
+        		android:background="@drawable/edittext"
+        		android:hint="Build Id"
+        		android:ems="10" >
+        	</EditText>
+	
+    	    <EditText
+            	android:id="@+id/editText2"
+            	android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:padding="10dp"
+        		android:background="@drawable/edittext"
+        		android:hint="Android Version"
+        		android:ems="10" />
+    	    
+    	    <EditText
+            	android:id="@+id/editText3"
+            	android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:padding="10dp"
+        		android:background="@drawable/edittext"
+        		android:hint="Model Number"
+        		android:ems="10" />
+
+        	<Button
+	            android:id="@+id/button1"
+    	        android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:layout_gravity="center"
+        		android:layout_marginTop="5dp"
+        		android:padding="10dp"
+        		android:text="Commit changes"
+        		android:textAlignment="center"
+        		android:background="@drawable/signinbutton" />
+        
+        </LinearLayout>
+        
+        <Button
+	            android:id="@+id/button2"
+            	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:background="#ffffff"
+        	android:layout_gravity="right"
+        	android:textColor="#4A8BF5"
+        	android:text="Reset to Default" />
+        
+    </LinearLayout>
+
+</ScrollView>
