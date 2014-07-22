@@ -1,20 +1,25 @@
 package com.apprevelations.updateandroid;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
 public class Profile extends Activity implements OnClickListener{
 
-	RelativeLayout rl1,rl2;
-	LinearLayout mainlayout,expandlayout;
+	RelativeLayout rl1,rl2,rl;
+	int a=0;
+	LinearLayout mainlayout,expandlayout,horizontalline,verticalline;
+	TextView profile, version,addprofile;
+	ImageView apply, delete,remove;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -23,9 +28,18 @@ public class Profile extends Activity implements OnClickListener{
 		mainlayout= (LinearLayout) findViewById(R.id.llmainlayout);
 		rl1=(RelativeLayout) findViewById(R.id.rlprofile1);
 		rl2=(RelativeLayout) findViewById(R.id.rlprofile2);
+		addprofile=(TextView) findViewById(R.id.tvaddprofile);
 		expandlayout=(LinearLayout) findViewById(R.id.llexpand);
 		rl1.setOnClickListener(this);
 		rl2.setOnClickListener(this);
+		addprofile.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+			createdymanic(a++);	
+			}
+		});
 		
 	}
 	@Override
@@ -63,143 +77,98 @@ public class Profile extends Activity implements OnClickListener{
 		
 	}
 	
-   /* void createdymanic(int a)
-	{
-		rl= new RelativeLayout(Profile.this);
-		rl.setBackgroundColor(Profile.this.getResources().getColor(R.color.background));
+	   void createdymanic(int a)
+	   {
+			rl= new RelativeLayout(Profile.this);
+			rl.setBackgroundColor(Profile.this.getResources().getColor(R.color.background));
 
-        LinearLayout.LayoutParams rlp = new LinearLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+	        LinearLayout.LayoutParams rlp = new LinearLayout.LayoutParams(
+	                LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
 
-        rlp.setMargins(15, 15, 15, 15);
-        //RelativeLayout.LayoutParams ivprofile= new RelativeLayout.LayoutParams(35, 50);
-        RelativeLayout.LayoutParams ivprofile = new RelativeLayout.LayoutParams(
-        RelativeLayout.LayoutParams.WRAP_CONTENT,
-        RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams textname = new RelativeLayout.LayoutParams(
-        				RelativeLayout.LayoutParams.MATCH_PARENT,
-        					RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams textdate = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams textbody = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams imagelike = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams imagecomment = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams imageshare = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams editcomment = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams linearlayoutparams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams scrolled = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+	        rlp.setMargins(15, 15, 15, 15);
+	        RelativeLayout.LayoutParams hline = new RelativeLayout.LayoutParams(220,1);
+	        RelativeLayout.LayoutParams vline = new RelativeLayout.LayoutParams(1,50);
+	        RelativeLayout.LayoutParams profilenumber = new RelativeLayout.LayoutParams(
+	                RelativeLayout.LayoutParams.WRAP_CONTENT,
+	                RelativeLayout.LayoutParams.WRAP_CONTENT);
+	        RelativeLayout.LayoutParams versionpram = new RelativeLayout.LayoutParams(
+	                RelativeLayout.LayoutParams.WRAP_CONTENT,
+	                RelativeLayout.LayoutParams.WRAP_CONTENT);
+	        RelativeLayout.LayoutParams imageapply = new RelativeLayout.LayoutParams(
+	                RelativeLayout.LayoutParams.WRAP_CONTENT,
+	                RelativeLayout.LayoutParams.WRAP_CONTENT);
+	        RelativeLayout.LayoutParams imageremove = new RelativeLayout.LayoutParams(
+	                RelativeLayout.LayoutParams.WRAP_CONTENT,
+	                RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        
+	        
 
 
-        // set picture of the person
-        ivprofilepic= new ImageView(getActivity());
-        ivprofile.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        ivprofile.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        ivprofile.setMargins(5,5,0,0);
-        ivprofilepic.setId(1+a);
-        ivprofilepic.setImageResource(R.drawable.ic_launcher);
+	        // set picture of the person
+	        horizontalline= new LinearLayout(Profile.this);
+	        hline.addRule(RelativeLayout.CENTER_VERTICAL);
+	        hline.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+	        hline.setMargins(18,0,0,0);
+	        horizontalline.setId(1+a);
+	        horizontalline.setOrientation(LinearLayout.HORIZONTAL);
+	        horizontalline.setBackgroundColor(Profile.this.getResources().getColor(R.color.backline));
 
 
 
-        tvname= new TextView(getActivity());
-        textname.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        textname.addRule(RelativeLayout.RIGHT_OF, ivprofilepic.getId());
-        textname.setMargins(8, 5, 0, 0);
-        tvname.setId(2+a);
-        tvname.setText("Name");
-        tvname.setTextColor(getResources().getColor(R.color.textcolor));
-        tvname.setTextSize(18);
+	        remove= new ImageView(Profile.this);
+	        imageremove.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+	        imageremove.setMargins(0,0,15,0);
+	        remove.setId(3+a);
+	        remove.setBackgroundResource(R.drawable.ic_action_remove);
+	        
+	        
+	        verticalline= new LinearLayout(Profile.this);
+	        vline.addRule(RelativeLayout.CENTER_VERTICAL);
+	        vline.addRule(RelativeLayout.LEFT_OF,remove.getId());
+	        vline.setMargins(0,0,14,0);
+	        verticalline.setOrientation(LinearLayout.VERTICAL);
+	        verticalline.setId(5+a);
+	        verticalline.setBackgroundColor(Profile.this.getResources().getColor(R.color.backline));
+	        
 
-        tvdate= new TextView(getActivity());
-        textdate.addRule(RelativeLayout.ALIGN_BOTTOM, ivprofilepic.getId());
-        textdate.addRule(RelativeLayout.ALIGN_LEFT, tvname.getId());
-        textdate.addRule(RelativeLayout.BELOW, tvname.getId());
-        tvdate.setId(3+a);
-        tvname.setText("Date");
-
-
-        tvcontent= new TextView(getActivity());
-        textbody.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        textbody.addRule(RelativeLayout.BELOW, ivprofilepic.getId());
-        textbody.setMargins(5,0,0,0);
-        tvcontent.setId(4+a);
-        tvcontent.setText("Content");
-
-
-		iblike= new Button(getActivity());
-
-	    imagelike.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-	    imagelike.addRule(RelativeLayout.BELOW, tvcontent.getId());
-	    imagelike.setMargins(5, 7, 0, 0);
-	    iblike.setId(5+a);
-        iblike.setText("like");
+	        imageremove.addRule(RelativeLayout.BELOW,verticalline.getId());
+	        
+	        profile= new TextView(Profile.this);
+	        profilenumber.addRule(RelativeLayout.ALIGN_LEFT,horizontalline.getId());
+	        profilenumber.addRule(RelativeLayout.ALIGN_TOP,verticalline.getId());
+	        profile.setId(2+a);
+	        String name="Profile" +a;
+	        profile.setText(name);
+	        profile.setTextColor(Color.rgb(11, 33, 97));
+	        
 
 
-		ibcomment= new Button(getActivity());
-	    imagecomment.addRule(RelativeLayout.ALIGN_TOP, iblike.getId());
-	    imagecomment.addRule(RelativeLayout.CENTER_HORIZONTAL);
-	    ibcomment.setId(6+a);
-	    ibcomment.setText("comment");
+	        
+
+	        apply= new ImageView(Profile.this);
+	        imageapply.addRule(RelativeLayout.ABOVE,verticalline.getId());
+	        imageapply.addRule(RelativeLayout.ALIGN_LEFT,remove.getId());
+	        apply.setId(4+a);
+	        apply.setBackgroundResource(R.drawable.ic_action_accept);
+
+	        
+
+	        version= new TextView(Profile.this);
+	        profilenumber.addRule(RelativeLayout.ALIGN_LEFT,horizontalline.getId());
+	        profilenumber.addRule(RelativeLayout.ALIGN_BOTTOM,remove.getId());
+	        profile.setId(6+a);
+	        profile.setText("4.4.2");
+	        profile.setTextColor(Color.rgb(11, 33, 97));
+
+	        
+		    rl.addView(horizontalline,hline);
+		    rl.addView(profile,profilenumber);
+		    rl.addView(remove,imageremove);
+		    rl.addView(apply,imageapply);
+		    rl.addView(verticalline,vline);
+		    rl.addView(version,versionpram);
+		    mainlayout.addView(rl, 1, rlp);
 
 
-		ibshare= new Button(getActivity());
-	    imageshare.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-	    imageshare.addRule(RelativeLayout.ALIGN_TOP, iblike.getId());
-	    imageshare.setMargins(0,0,0,5);
-	    ibshare.setId(7+a);
-	    ibshare.setText("share");
-
-		etcommentbody= new EditText(getActivity());
-	    editcomment.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-	    editcomment.addRule(RelativeLayout.BELOW, iblike.getId());
-	    editcomment.setMargins(5,8,0,0);
-	    etcommentbody.setId(6+a);
-		etcommentbody.setHint("Add a comment...");
-		etcommentbody.setTextColor(getResources().getColor(R.color.textcolorblack));
-		//ab[6+a] = etcommentbody.getText().toString();
-		
-		commentlayout= new LinearLayout(getActivity());
-		linearlayoutparams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		linearlayoutparams.addRule(RelativeLayout.BELOW, etcommentbody.getId());
-		linearlayoutparams.setMargins(5, 5, 0, 0);
-		commentlayout.setId(9+a);
-
-		//scroll= new ScrollView(getActivity());
-		//scrolled.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		//scrolled.addRule(RelativeLayout.BELOW, etcommentbody.getId());
-		//scrolled.setMargins(5, 5, 0, 0);
-		//scroll.setId(9+a);
-		
-
-	    rl.addView(ivprofilepic, ivprofile);
-	    rl.addView(tvname, textname);
-	    rl.addView(tvdate ,textdate);
-	    rl.addView(tvcontent, textbody);
-	    rl.addView(iblike, imagelike);
-	    rl.addView(ibcomment, imagecomment);
-	    rl.addView(ibshare, imageshare);
-	    rl.addView(etcommentbody, editcomment);
-        //scroll.addView(commentlayout, linearlayoutparams);
-        rl.addView(commentlayout, linearlayoutparams);
-	    mainlayout.addView(rl, 0, rlp);
-
-
-	}
-*/
+		}
 }
