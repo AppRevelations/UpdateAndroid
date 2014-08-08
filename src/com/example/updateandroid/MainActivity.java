@@ -15,7 +15,6 @@ import java.util.Scanner;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -28,7 +27,10 @@ import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	
-//	FileInputStream fis;
+	private boolean isRooted = false;
+	
+	private int NO_OF_PROPERTIES = 3;
+	
 	Button update, reset;
 	EditText name, version, model;
 	File orig = new File("/system", "build.prop");
@@ -38,7 +40,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	Runtime r = Runtime.getRuntime();
 	Process suProcess;
 	static DataOutputStream dos;
-//	DataInputStream dis;
 	
 	Scanner scanner;
 	List<String> lines;
@@ -54,44 +55,54 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		initialise();
+		update = (Button) findViewById(R.id.button1);
+		reset = (Button) findViewById(R.id.button2);
+		
+		name = (EditText) findViewById(R.id.editText1);
+		version = (EditText) findViewById(R.id.editText2);
+		model = (EditText) findViewById(R.id.editText3);
 		
 		try {
 			suProcess = r.exec("su");
+			isRooted = true;
 			dos = new DataOutputStream(suProcess.getOutputStream());
+			
+			backupOriginal();
+			
+			update.setOnClickListener(this);
+			reset.setOnClickListener(this);
+			
+			showCurrentProperties();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
+			isRooted = false;
+			showCurrentProperties();
 			e1.printStackTrace();
 			Toast.makeText(getApplicationContext(), e1.toString(), Toast.LENGTH_SHORT).show();
 			//make toast to report error
 		}
-		
-		backupOriginal();
-		
-		update.setOnClickListener(this);
-		reset.setOnClickListener(this);
-		
-		showCurrentProperties();
-		
 	}
 
 	private void showCurrentProperties() {
 		// TODO Auto-generated method stub
-		try {
-			dos.writeBytes("chmod 777 /system/build.prop\n");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-				
-		int flag = 3;
 		
+		int flag = NO_OF_PROPERTIES;
+		
+		if(isRooted){
+			try {
+				dos.writeBytes("chmod 777 /system/build.prop\n");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+			
 		try {
 			scanner = new Scanner(new FileInputStream(orig));
 			while((flag != 0) && (scanner.hasNextLine())){
-		        
+				
 				string = scanner.nextLine();
-	    	
+				
 				if(string.contains(ver)){
 					version.setHint(string.substring(string.indexOf("=") + 1));
 					flag--;
@@ -114,12 +125,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		try {
-			dos.writeBytes("chmod 644 /system/build.prop\n");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			
+		if(isRooted){
+			try {
+				dos.writeBytes("chmod 644 /system/build.prop\n");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -141,8 +154,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		else{
 			Toast.makeText(getApplicationContext(), "Original file already exists", Toast.LENGTH_SHORT).show();
 		}
-		
-		updateVisibility();
 	}
 	
 	private void restoreOriginal() {
@@ -159,8 +170,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 				e.printStackTrace();
 				Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
 			}
-			
-			updateVisibility();
 		}
 	}
 
@@ -168,31 +177,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-	}
-
-	private void initialise() {
-		// TODO Auto-generated method stub
-		update = (Button) findViewById(R.id.button1);
-		reset = (Button) findViewById(R.id.button2);
-		
-		name = (EditText) findViewById(R.id.editText1);
-		version = (EditText) findViewById(R.id.editText2);
-		model = (EditText) findViewById(R.id.editText3);
-		
-		//fis = openFileInput(name);
-		
-		updateVisibility();
-	}	
-	
-	private void updateVisibility() {
-		// TODO Auto-generated method stub
-		if(!(temp.exists())){
-			reset.setClickable(false);
-		}
-		
-		else{
-			reset.setClickable(true);
-		}
 	}
 
 	@Override
@@ -283,21 +267,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		
-		try {
-			dos.writeBytes("chmod 644 /system/build.prop\n");    /*build.prop*/
-			dos.writeBytes("mount -o ro,remount /system\n");
-			
-			// reboot?????????
-			
-			dos.writeBytes("exit\n");
-			suProcess.waitFor();
-			Toast.makeText(getApplicationContext(), "Exiting Application", Toast.LENGTH_SHORT).show();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(isRooted){
+			try {
+				dos.writeBytes("chmod 644 /system/build.prop\n");	/*build.prop*/
+				dos.writeBytes("mount -o ro,remount /system\n");	// reboot
+				dos.writeBytes("exit\n");
+				suProcess.waitFor();
+				Toast.makeText(getApplicationContext(), "Exiting Application", Toast.LENGTH_SHORT).show();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
