@@ -256,6 +256,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			case R.id.button2 : 
 			
 				restoreOriginal();
+				
+				new MyCustomDialog().show(getSupportFragmentManager(), "reboot_dialog");
 			
 				break;
 		
