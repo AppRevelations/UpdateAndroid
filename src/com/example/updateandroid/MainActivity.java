@@ -27,28 +27,27 @@ import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	
-	private boolean isRooted = false;
-	
 	private int NO_OF_PROPERTIES = 3;
 	
-	Button update, reset;
-	EditText name, version, model;
-	File orig = new File("/system", "build.prop");
-	File temp = new File("/system",	"build1.prop");
+	private boolean isRooted = false;
+	
+	private Button update, reset;
+	private EditText name, version, model;
+	private File orig = new File("/system", "build.prop");
+	private File temp = new File("/system",	"build1.prop");
 	//File temp = new File(MainActivity.this.getFilesDir(), "build.prop");
 	
-	Runtime r = Runtime.getRuntime();
-	Process suProcess;
-	static DataOutputStream dos;
+	private Runtime r = Runtime.getRuntime();
+	private Process suProcess;
+	private static DataOutputStream dos;
 	
-	Scanner scanner;
-	List<String> lines;
-	int lineIndex = 0;
-	String string;
-	String mod = "ro.product.model=";
-	String build = "ro.build.display.id=";
-	String ver = "ro.build.version.release=";
-	BufferedWriter writer;
+	private Scanner scanner;
+	private List<String> lines;
+	private String string;
+	private String PRODUCT_MODEL = "ro.product.model=";
+	private String BUILD_ID = "ro.build.display.id=";
+	private String VERSION = "ro.build.version.release=";
+	private BufferedWriter writer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,19 +102,19 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 				
 				string = scanner.nextLine();
 				
-				if(string.contains(ver)){
+				if(string.contains(VERSION)){
 					version.setHint(string.substring(string.indexOf("=") + 1));
 					flag--;
 					continue;
 				}
 				
-				if(string.contains(build)){
+				if(string.contains(BUILD_ID)){
 					name.setHint(string.substring(string.indexOf("=") + 1));
 					flag--;
 					continue;
 				}
 				
-				if(string.contains(mod)){
+				if(string.contains(PRODUCT_MODEL)){
 					model.setHint(string.substring(string.indexOf("=") + 1));
 					flag--;
 					continue;
@@ -165,6 +164,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 				dos.writeBytes("mv /system/build1.prop /system/build.prop\n");
 				dos.writeBytes("mount -o ro,remount /system\n");
 				Toast.makeText(getApplicationContext(), "Original file restored", Toast.LENGTH_SHORT).show();
+				
+				new MyCustomDialog().show(getSupportFragmentManager(), "reboot_dialog");
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -204,23 +206,22 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			        
 						string = scanner.nextLine();
 			    	
-						if(string.contains(ver)){
-							lines.add(ver + version.getText().toString() + "\n");
+						if(string.contains(VERSION)){
+							lines.add(VERSION + version.getText().toString() + "\n");
 							continue;
 						}
 						
-						if(string.contains(build)){
-							lines.add(build + name.getText().toString() + "\n");
+						if(string.contains(BUILD_ID)){
+							lines.add(BUILD_ID + name.getText().toString() + "\n");
 							continue;
 						}
 						
-						if(string.contains(mod)){
-							lines.add(mod + model.getText().toString() + "\n");
+						if(string.contains(PRODUCT_MODEL)){
+							lines.add(PRODUCT_MODEL + model.getText().toString() + "\n");
 							continue;
 						}
 			    	
 						lines.add(string + "\n");
-						lineIndex++;
 					}
 			    
 /*build.prop*/  	/*dos.writeBytes("chmod 777 /system/build.prop\n");*/ //this line has been writen above since writing here leaves no time for changing the permission of build.prop to w (writable) before the just next line is executed 
@@ -256,8 +257,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			case R.id.button2 : 
 			
 				restoreOriginal();
-				
-				new MyCustomDialog().show(getSupportFragmentManager(), "reboot_dialog");
 			
 				break;
 		
