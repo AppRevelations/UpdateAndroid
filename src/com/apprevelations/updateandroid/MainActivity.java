@@ -1,4 +1,4 @@
-package com.example.updateandroid;
+package com.apprevelations.updateandroid;
 
 import java.io.BufferedWriter;
 //import java.io.DataInputStream;
@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.apprevelations.updateandroid.R;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	

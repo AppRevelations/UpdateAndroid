@@ -1,4 +1,4 @@
-package com.example.updateandroid;
+package com.apprevelations.updateandroid;
 
 import android.app.Activity;
 import android.os.Bundle;
