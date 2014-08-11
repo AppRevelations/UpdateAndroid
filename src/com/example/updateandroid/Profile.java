@@ -1,5 +1,17 @@
 package com.example.updateandroid;
 
-public class Profile {
+import android.app.Activity;
+import android.os.Bundle;
 
+
+public class Profile extends Activity{
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		
+	}
+	
+	
 }
