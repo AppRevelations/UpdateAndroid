@@ -63,24 +63,13 @@
         </LinearLayout>
         
         <Button
-	            android:id="@+id/button2"
-            	android:layout_width="wrap_content"
+            android:id="@+id/button2"
+           	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:background="#ffffff"
         	android:layout_gravity="right"
         	android:textColor="#4A8BF5"
         	android:text="Reset to Default" />
-        
-        <com.google.android.gms.common.SignInButton
-	    	android:id="@+id/google_plus_sign_in_button"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/google_plus_logout_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
         
     </LinearLayout>
     
