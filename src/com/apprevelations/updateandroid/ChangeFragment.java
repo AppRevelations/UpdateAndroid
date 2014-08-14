@@ -82,18 +82,18 @@ public class ChangeFragment extends Fragment implements OnClickListener{
 			
 			backupOriginal();
 			
-			update.setOnClickListener(this);
-			reset.setOnClickListener(this);
-			
 			showCurrentProperties();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			isRooted = false;
 			showCurrentProperties();
 			e1.printStackTrace();
-			Toast.makeText(getActivity(), e1.toString(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Phone not rooted!!!", Toast.LENGTH_SHORT).show();
 			//make toast to report error
 		}
+		
+		update.setOnClickListener(this);
+		reset.setOnClickListener(this);
 		
 		return rootView;
 	}
@@ -204,6 +204,11 @@ public class ChangeFragment extends Fragment implements OnClickListener{
 		switch(v.getId()){
 		
 			case R.id.button1 : 
+				
+				if(!isRooted){
+					Toast.makeText(getActivity(), "Phone not rooted!!!", Toast.LENGTH_SHORT).show();
+					break;
+				}
 			
 				try {
 					dos.writeBytes("mount -o rw,remount /system\n");
@@ -263,7 +268,12 @@ public class ChangeFragment extends Fragment implements OnClickListener{
 			
 				break;
 		
-			case R.id.button2 : 
+			case R.id.button2 :
+				
+				if(!isRooted){
+					Toast.makeText(getActivity(), "Phone not rooted!!!", Toast.LENGTH_SHORT).show();
+					break;
+				}
 			
 				restoreOriginal();
 			
