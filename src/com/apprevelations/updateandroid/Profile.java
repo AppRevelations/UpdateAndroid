@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
@@ -17,6 +19,7 @@ public class Profile extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.profile_xml);
 		mainlayout= (LinearLayout) findViewById(R.id.llmainlayout);
 		rl1=(RelativeLayout) findViewById(R.id.rlprofile1);
 		rl2=(RelativeLayout) findViewById(R.id.rlprofile2);
@@ -28,12 +31,29 @@ public class Profile extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+	//	final Animation fadein = AnimationUtils.loadAnimation(Profile.this, R.anim.fadein);
+	//	final Animation fadeout = AnimationUtils.loadAnimation(Profile.this, R.anim.fadeout);
 		
 		switch(v.getId())
 		{
 		case R.id.rlprofile1:
+		//	rl1.setAnimation(fadeout);
 			rl1.setVisibility(View.GONE);
+		//	expandlayout.setAnimation(fadein);
 			expandlayout.setVisibility(View.VISIBLE);
+			expandlayout.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+
+
+			//		expandlayout.setAnimation(fadeout);
+					expandlayout.setVisibility(View.GONE);
+			//		rl1.setAnimation(fadein);
+					rl1.setVisibility(View.VISIBLE);
+				}
+			});
 			break;
 			
 		case R.id.rlprofile2:
