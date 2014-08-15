@@ -58,7 +58,7 @@
         		android:padding="10dp"
         		android:text="Commit changes"
         		android:textAlignment="center"
-        		android:background="@drawable/signinbutton" />
+        		android:background="@drawable/button" />
         
         </LinearLayout>
         
