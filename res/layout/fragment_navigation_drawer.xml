@@ -8,52 +8,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="vertical"
+            android:background="@color/navigation_drawer_login_background_color" >
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher" />
-            
-            <LinearLayout
-            	android:layout_width="match_parent"
+        	<ImageView
+	            android:id="@+id/imageView1"
+            	android:layout_width="wrap_content"
             	android:layout_height="wrap_content"
-            	android:orientation="vertical" >
+            	android:src="@drawable/ic_launcher" />
 
-            	<TextView
-                	android:id="@+id/textView1"
-                	android:layout_width="wrap_content"
-                	android:layout_height="wrap_content"
-                	android:text="UserName"
-                	android:textAppearance="?android:attr/textAppearanceLarge" />
+       		<TextView
+	           	android:id="@+id/textView1"
+           		android:layout_width="wrap_content"
+           		android:layout_height="wrap_content"
+           		android:text="UserName"
+           		android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            	<TextView
-	                android:id="@+id/textView2"
-                	android:layout_width="wrap_content"
-                	android:layout_height="wrap_content"
-                	android:text="User Email"
-                	android:textAppearance="?android:attr/textAppearanceMedium" />
-           	</LinearLayout>
-
-        </LinearLayout>
+       		<TextView
+            	android:id="@+id/textView2"
+          		android:layout_width="wrap_content"
+          		android:layout_height="wrap_content"
+           		android:text="User Email"
+           		android:textAppearance="?android:attr/textAppearanceMedium" />
+       	
+       	</LinearLayout>
         
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="#f3f3f3"
+            android:background="#F3F3F3"
             android:orientation="vertical" >
             
         </LinearLayout>
         
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:background="#FFFFFF" >
 
             <TextView
                 android:id="@+id/textView3"
@@ -62,7 +58,7 @@
                 android:padding="10dp"
                 android:text="@string/title_section1"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_gravity="center_horizontal" />
+                android:background="@drawable/navigation_drawer_items_selector" />
             
             <TextView
                 android:id="@+id/textView4"
@@ -70,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/title_section2"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:background="@drawable/navigation_drawer_items_selector" />
             
             <TextView
                 android:id="@+id/textView5"
@@ -78,7 +75,8 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/title_section3"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:background="@drawable/navigation_drawer_items_selector" />
 
         </LinearLayout>
 
