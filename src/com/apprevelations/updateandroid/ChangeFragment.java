@@ -192,12 +192,6 @@ public class ChangeFragment extends Fragment implements OnClickListener{
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		inflater.inflate(R.menu.main, menu);
-	}
-
-	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		
