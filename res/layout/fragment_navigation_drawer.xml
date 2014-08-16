@@ -12,38 +12,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/apprevelations_background"
             android:orientation="vertical"
-            android:background="@color/navigation_drawer_login_background_color" >
+            android:padding="5dp" >
 
         	<ImageView
-	            android:id="@+id/imageView1"
+	            android:id="@+id/google_plus_profile_pic"
             	android:layout_width="wrap_content"
             	android:layout_height="wrap_content"
             	android:src="@drawable/ic_launcher" />
 
        		<TextView
-	           	android:id="@+id/textView1"
+	           	android:id="@+id/google_plus_user_name"
            		android:layout_width="wrap_content"
            		android:layout_height="wrap_content"
            		android:text="UserName"
-           		android:textAppearance="?android:attr/textAppearanceLarge" />
+           		android:textAppearance="?android:attr/textAppearanceMedium" />
 
        		<TextView
-            	android:id="@+id/textView2"
+            	android:id="@+id/google_email_id"
           		android:layout_width="wrap_content"
           		android:layout_height="wrap_content"
            		android:text="User Email"
-           		android:textAppearance="?android:attr/textAppearanceMedium" />
+           		android:textAppearance="?android:attr/textAppearanceSmall" />
        	
        	</LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#F3F3F3"
-            android:orientation="vertical" >
-            
-        </LinearLayout>
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,34 +45,40 @@
             android:background="#FFFFFF" >
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/navigation_drawer_item_0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/title_section1"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:background="@drawable/navigation_drawer_items_selector" />
             
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/navigation_drawer_item_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/title_section2"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:background="@drawable/navigation_drawer_items_selector" />
             
+            <LinearLayout
+       			android:layout_width="match_parent"
+           		android:layout_height="2dp"
+           		android:background="#F3F3F3"
+           		android:orientation="vertical" />
+            
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/navigation_drawer_item_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/title_section3"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:background="@drawable/navigation_drawer_items_selector" />
-
+            
         </LinearLayout>
-
+            
     </LinearLayout>
 
 </ScrollView>
