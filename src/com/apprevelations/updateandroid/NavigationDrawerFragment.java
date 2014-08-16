@@ -18,9 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ScrollView;
 
 /**
@@ -53,10 +50,9 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
 
     private DrawerLayout mDrawerLayout;
     private ScrollView mDrawerScrollView;
-//    private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = R.id.navigation_drawer_item_0;;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -93,44 +89,36 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
             Bundle savedInstanceState) {
     	mDrawerScrollView = (ScrollView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-/*    	mDrawerListView = (ListView) mDrawerScrollView.findViewById(R.id.navigation_drawer_options);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-*/
-    	mDrawerScrollView.findViewById(R.id.textView3).setOnClickListener(this);
-    	mDrawerScrollView.findViewById(R.id.textView4).setOnClickListener(this);
-    	mDrawerScrollView.findViewById(R.id.textView5).setOnClickListener(this);
-        return mDrawerScrollView;
+    	
+    	mDrawerScrollView.findViewById(R.id.navigation_drawer_item_0).setOnClickListener(this);
+    	mDrawerScrollView.findViewById(R.id.navigation_drawer_item_1).setOnClickListener(this);
+    	mDrawerScrollView.findViewById(R.id.navigation_drawer_item_2).setOnClickListener(this);
+    	
+    	mDrawerScrollView.findViewById(R.id.navigation_drawer_item_0).setSelected(true);
+        
+    	return mDrawerScrollView;
     }
     
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		
+		int mPreviousSelectedPosition = mCurrentSelectedPosition;
+		mCurrentSelectedPosition = v.getId();
+		mDrawerScrollView.findViewById(mPreviousSelectedPosition).setSelected(false);
+		mDrawerScrollView.findViewById(mCurrentSelectedPosition).setSelected(true);
+		
 		switch (v.getId()) {
-		case R.id.textView3:
-			selectItem(0);
+		case R.id.navigation_drawer_item_0:
+			selectItem(mCurrentSelectedPosition);
 			break;
 
-		case R.id.textView4:
-			selectItem(1);
+		case R.id.navigation_drawer_item_1:
+			selectItem(mCurrentSelectedPosition);
 			break;
 
-		case R.id.textView5:
-			selectItem(2);
+		case R.id.navigation_drawer_item_2:
+			selectItem(mCurrentSelectedPosition);
 			break;
 
 		default:
@@ -216,8 +204,8 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
+    private void selectItem(int selectedTextViewId) {
+        mCurrentSelectedPosition = selectedTextViewId;
 //        if (mDrawerListView != null) {
 //            mDrawerListView.setItemChecked(position, true);
 //        }
@@ -225,7 +213,7 @@ public class NavigationDrawerFragment extends Fragment implements OnClickListene
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+            mCallbacks.onNavigationDrawerItemSelected(selectedTextViewId);
         }
     }
 
