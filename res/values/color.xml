@@ -7,5 +7,8 @@
 	<color name="navigation_drawer_item_focused">#EBEBEB</color>
     <color name="navigation_drawer_item_selected">#EBEBEB</color>
     <color name="navigation_drawer_item_pressed">#EBEBEB</color>
-    <color name="navigation_drawer_item_selected_false">#FFFFFF</color> 
+    <color name="navigation_drawer_item_selected_false">#FFFFFF</color>
+    <color name="Black">#000000</color>
+    <color name="White">#FFFFFF</color>
+    <color name="navigation_drawer_item_group_seperator">#E5E5E5</color>
 </resources>
