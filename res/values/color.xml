@@ -5,5 +5,7 @@
     <color name="backline">#D8D8D8</color>
     <color name="navigation_drawer_login_background_color">#4051B5</color>
 	<color name="navigation_drawer_item_focused">#EBEBEB</color>
-    
+    <color name="navigation_drawer_item_selected">#EBEBEB</color>
+    <color name="navigation_drawer_item_pressed">#EBEBEB</color>
+    <color name="navigation_drawer_item_selected_false">#FFFFFF</color> 
 </resources>
