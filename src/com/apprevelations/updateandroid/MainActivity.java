@@ -129,16 +129,16 @@ public class MainActivity extends ActionBarActivity
         Fragment fragment = null;
         
         switch (position) {
-		case 0:
+		case R.id.navigation_drawer_item_0 :
 			fragment = new ChangeFragment();
 			break;
 
-		case 1:
+		case R.id.navigation_drawer_item_1 :
 			//To be replaced afterwards with the fragment
 			fragment = new ChangeFragment();
 			break;
 
-		case 2:
+		case R.id.navigation_drawer_item_2 :
 			//To be replaced afterwards with the fragment
 			fragment = new ChangeFragment();
 			break;
