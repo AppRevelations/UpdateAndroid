@@ -2,14 +2,14 @@
     android:id="@+id/scrollView1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff" >
+    android:background="@color/White" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
     	android:padding="20dp"
-    	android:background="#ffffff"
+    	android:background="@color/White"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -66,7 +66,7 @@
             android:id="@+id/button2"
            	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:background="#ffffff"
+        	android:background="@color/White"
         	android:layout_gravity="right"
         	android:textColor="#4A8BF5"
         	android:text="Reset to Default" />
