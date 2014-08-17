@@ -27,11 +27,9 @@ public class Profile extends Activity implements OnClickListener{
 		setContentView(R.layout.profile_xml);
 		mainlayout= (LinearLayout) findViewById(R.id.llmainlayout);
 		rl1=(RelativeLayout) findViewById(R.id.rlprofile1);
-		rl2=(RelativeLayout) findViewById(R.id.rlprofile2);
 		addprofile=(TextView) findViewById(R.id.tvaddprofile);
 		expandlayout=(LinearLayout) findViewById(R.id.llexpand);
 		rl1.setOnClickListener(this);
-		rl2.setOnClickListener(this);
 		addprofile.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -69,10 +67,7 @@ public class Profile extends Activity implements OnClickListener{
 				}
 			});
 			break;
-			
-		case R.id.rlprofile2:
-			
-			break;
+		
 		}
 		
 	}
