@@ -8,14 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/apprevelations_background"
+            android:background="@drawable/app_revelations"
             android:orientation="vertical"
             android:padding="5dp" >
-
+<!-- 
         	<ImageView
 	            android:id="@+id/google_plus_profile_pic"
             	android:layout_width="wrap_content"
@@ -37,9 +37,9 @@
        		    android:text="@string/user_email"
        		    android:textColor="@color/Black"
        		    android:textAppearance="?android:attr/textAppearanceSmall" />
-       	
+ -->
        	</LinearLayout>
-        
+ 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
