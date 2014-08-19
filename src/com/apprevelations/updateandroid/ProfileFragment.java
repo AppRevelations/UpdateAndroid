@@ -28,7 +28,7 @@ public class ProfileFragment extends Fragment implements OnClickListener{
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+			ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		
 		View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
