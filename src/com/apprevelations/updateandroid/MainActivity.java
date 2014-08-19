@@ -133,7 +133,7 @@ public class MainActivity extends ActionBarActivity
 
 		case R.id.navigation_drawer_item_1 :
 			//To be replaced afterwards with the fragment
-			fragment = new ChangeFragment();
+			fragment = new ProfileFragment();
 			break;
 
 		case R.id.navigation_drawer_item_2 :
