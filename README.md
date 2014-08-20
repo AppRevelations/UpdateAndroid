@@ -2,6 +2,7 @@ UpdateAndroid
 =============
 
 Change the current version of android without changing anything actually
+User can sign in with google+ account to save and sync his created profiles across devices. 
 <br>
 This app requires root permission
 <br>
