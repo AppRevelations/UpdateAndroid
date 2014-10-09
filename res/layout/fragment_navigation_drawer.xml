@@ -12,32 +12,57 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_revelations"
             android:orientation="vertical"
+            android:background="#F7F7F7"
             android:padding="5dp" >
-<!-- 
-        	<ImageView
-	            android:id="@+id/google_plus_profile_pic"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:contentDescription="@string/profile_pic_description"
-            	android:src="@drawable/ic_launcher" />
+            
+            <RelativeLayout 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                
+                <LinearLayout 
+                    android:id="@+id/opaque"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
-       		<TextView
-	           	android:id="@+id/google_plus_user_name"
-           		android:layout_width="wrap_content"
-           		android:layout_height="wrap_content"
-           		android:text="@string/user_name"
-           		android:textAppearance="?android:attr/textAppearanceMedium" />
+        			<ImageView
+	            		android:id="@+id/profile_pic"
+            			android:layout_width="wrap_content"
+            			android:layout_height="wrap_content"
+            			android:contentDescription="@string/profile_pic_description"
+            			android:src="@drawable/ic_launcher" />
 
-       		<TextView
-       		    android:id="@+id/google_email_id"
-       		    android:layout_width="wrap_content"
-       		    android:layout_height="wrap_content"
-       		    android:text="@string/user_email"
-       		    android:textColor="@color/Black"
-       		    android:textAppearance="?android:attr/textAppearanceSmall" />
- -->
+       				<TextView
+	           			android:id="@+id/user_name"
+           				android:layout_width="wrap_content"
+           				android:layout_height="wrap_content"
+           				android:text="@string/user_name"
+           				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+       				<TextView
+       		    		android:id="@+id/email_id"
+       		    		android:layout_width="wrap_content"
+       		    		android:layout_height="wrap_content"
+       		    		android:text="@string/user_email"
+       		    		android:textColor="@color/Black"
+       		    		android:textAppearance="?android:attr/textAppearanceSmall" />
+       				
+       			</LinearLayout>
+       			
+                <LinearLayout 
+                    android:id="@+id/transparent_layout"
+                    android:alpha="0"
+                    android:orientation="vertical"
+                    android:layout_alignTop="@id/opaque"
+                    android:layout_alignBottom="@id/opaque"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                    
+                </LinearLayout>
+       			
+       		</RelativeLayout>
+
        	</LinearLayout>
  
         <LinearLayout
