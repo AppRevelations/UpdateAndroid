@@ -72,6 +72,7 @@ public class MainActivityPager extends FragmentActivity implements OnClickListen
 					
 							Intent igapp=new Intent(MainActivityPager.this,com.apprevelations.updateandroid.MainActivity.class);
 							   startActivity(igapp);
+							   finish();
 							  
 						}
 					});
