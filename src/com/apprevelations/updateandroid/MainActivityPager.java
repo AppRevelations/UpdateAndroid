@@ -1,7 +1,9 @@
 package com.apprevelations.updateandroid;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -11,7 +13,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-@SuppressLint("NewApi")
 public class MainActivityPager extends FragmentActivity implements OnClickListener 
 		 {
 
@@ -19,13 +20,27 @@ public class MainActivityPager extends FragmentActivity implements OnClickListen
 	private TabsPagerAdapter mAdapter;
 	TextView skip;
 	Button bt1,bt2,bt3,bt4,gpp;
-	
+	SharedPreferences spref;
+	int flag=0;
 
-	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		 spref = getSharedPreferences("mysharedprefs", Context.MODE_PRIVATE);
+		flag=spref.getInt("flag", 0);
+		if(flag==1)
+		{
+		Intent imain=new Intent(MainActivityPager.this,com.apprevelations.updateandroid.MainActivity.class);
+		   startActivity(imain);
+		   this.finish();
+		}
+		else{
+			Editor editor = spref.edit();
+		      editor.putInt("flag", 1);
+
+		      editor.commit(); 
+		}
 		setContentView(R.layout.mainpager);
 		bt1=(Button) findViewById(R.id.btn1);
     	bt2=(Button) findViewById(R.id.btn2);
