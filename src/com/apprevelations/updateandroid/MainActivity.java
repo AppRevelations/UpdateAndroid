@@ -2,45 +2,36 @@ package com.apprevelations.updateandroid;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
-import com.google.android.gms.plus.model.people.Person.Image;
 
 import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
+import android.util.SparseArray;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity implements OnClickListener,
-		ConnectionCallbacks, OnConnectionFailedListener,
-		NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends ActionBarActivity {
+
+	private static String APP_PACKAGE_NAME = "com.apprevelations.updateandroid";
+	private static String PLAY_STORE_LINK = "market://details?id="
+			+ APP_PACKAGE_NAME;
 
 	private Process suProcess;
 	private DataOutputStream dos;
@@ -48,85 +39,125 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 	private ShareActionProvider mShareActionProvider;
 
 	/**
-	 * Fragment managing the behaviors, interactions and presentation of the
-	 * navigation drawer.
+	 * The {@link android.support.v4.view.PagerAdapter} that will provide
+	 * fragments representing each object in a collection. We use a
+	 * {@link android.support.v4.app.FragmentStatePagerAdapter} derivative,
+	 * which will destroy and re-create fragments as needed, saving and
+	 * restoring their state in the process. This is important to conserve
+	 * memory and is a best practice when allowing navigation between objects in
+	 * a potentially large collection.
 	 */
-	private NavigationDrawerFragment mNavigationDrawerFragment;
+	DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
 
 	/**
-	 * Used to store the last screen title. For use in
-	 * {@link #restoreActionBar()}.
+	 * The {@link android.support.v4.view.ViewPager} that will display the
+	 * object collection.
 	 */
-	private CharSequence mTitle;
+	ViewPager mViewPager;
+	
+//	static OnScroll mCallback;
 
-	/*
-	 * Track whether the sign-in button has been clicked so that we know to
-	 * resolve all issues preventing sign-in without waiting.
-	 */
-	private boolean mSignInClicked;
-
-	/*
-	 * Store the connection result from onConnectionFailed callbacks so that we
-	 * can resolve them when the user clicks sign-in.
-	 */
-	private ConnectionResult mConnectionResult;
-
-	/* Request code used to invoke sign in user interactions. */
-	private static final int RC_SIGN_IN = 0;
-
-	/* Client used to interact with Google APIs. */
-	private GoogleApiClient mGoogleApiClient;
-
-	/*
-	 * A flag indicating that a PendingIntent is in progress and prevents us
-	 * from starting further intents.
-	 */
-	private boolean mIntentInProgress;
+//	private GestureDetector swipeDetector = new GestureDetector(
+//			new SwipeGesture());
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this).addApi(Plus.API)
-				.addScope(Plus.SCOPE_PLUS_LOGIN).build();
-
-		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.navigation_drawer);
-		mTitle = getTitle();
-
-		// Set up the drawer.
-		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
-				(DrawerLayout) findViewById(R.id.drawer_layout));
-
 		UpdateApplication updateApplication = (UpdateApplication) getApplicationContext();
 		suProcess = updateApplication.getSuProcess();
 		dos = updateApplication.getDataOutputStream();
+
+		// Create an adapter that when requested, will return a fragment
+		// representing an object in
+		// the collection.
+		//
+		// ViewPager and its adapters use support library fragments, so we must
+		// use
+		// getSupportFragmentManager.
+		mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(
+				getSupportFragmentManager());
+
+		// Set up action bar.
+		final ActionBar actionBar = getSupportActionBar();
+
+		// Specify that the Home button should show an "Up" caret, indicating
+		// that touching the
+		// button will take the user one step up in the application's hierarchy.
+		// actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color
+				.parseColor("#007236")));
+
+		// Set up the ViewPager, attaching the adapter.
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+
+/*		mViewPager.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					return false;
+				} else {
+					swipeDetector.onTouchEvent(event);
+					return true;
+				}
+			}
+		});
+*/
 	}
 
+/*	class SwipeGesture extends SimpleOnGestureListener {
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2,
+				float distanceX, float distanceY) {
+			// TODO Auto-generated method stub
+
+			if (e1.getY() > e2.getY()) {
+				// addImage.setVisibility(View.GONE);
+				mCallback.setVisibiltyOfButton(View.GONE);
+			} else if (e1.getY() < e2.getY()) {
+				// addImage.setVisibility(View.VISIBLE);
+				mCallback.setVisibiltyOfButton(View.VISIBLE);
+			}
+
+			return true;
+		}
+
+	}
+	
+	public interface OnScroll {
+        public void setVisibiltyOfButton(int visibility);
+    }
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		super.dispatchTouchEvent(ev);
+		
+		return swipeDetector.onTouchEvent(ev);
+	}
+*/
 	@Override
 	protected void onStart() {
 		super.onStart();
-		mGoogleApiClient.connect();
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-
-		if (mGoogleApiClient.isConnected()) {
-			mGoogleApiClient.disconnect();
-		}
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		try {
-			Toast.makeText(this, "Exiting Application",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Exiting Application", Toast.LENGTH_SHORT)
+					.show();
 			dos.writeBytes("exit\n");
 			suProcess.waitFor();
 		} catch (IOException e) {
@@ -136,7 +167,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -172,256 +203,90 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_rate_us) {
-			return true;
-		} else if (id == R.id.action_about_us) {
-			return true;
-		} else if (id == R.id.action_logout) {
-
-			if (mGoogleApiClient.isConnected()) {
-				Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-				mGoogleApiClient.disconnect();
-				mGoogleApiClient.connect();
-
-				mNavigationDrawerFragment
-						.showUserProfilePic(BitmapFactory.decodeResource(
-								getResources(), R.drawable.ic_launcher));
-				mNavigationDrawerFragment.showUserName("Name");
-				mNavigationDrawerFragment.showEmailId("Email ID");
-			}
-			return true;
-
-		} else if (id == R.id.action_revoke_access) {
-
-			if (mGoogleApiClient.isConnected()) {
-				Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-				Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
-						.setResultCallback(new ResultCallback<Status>() {
-							@Override
-							public void onResult(Status arg0) {
-								mGoogleApiClient.connect();
-							}
-
-						});
-				mNavigationDrawerFragment
-						.showUserProfilePic(BitmapFactory.decodeResource(
-								getResources(), R.drawable.ic_launcher));
-				mNavigationDrawerFragment.showUserName("Name");
-				mNavigationDrawerFragment.showEmailId("Email ID");
-			}
-			return true;
-
-		} else if (id == R.id.action_settings) {
+			MainActivity.this.startActivity(new Intent(Intent.ACTION_VIEW, Uri
+					.parse("market://details?id=" + APP_PACKAGE_NAME)));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void restoreActionBar() {
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(mTitle);
-	}
+	/**
+	 * A {@link android.support.v4.app.FragmentStatePagerAdapter} that returns a
+	 * fragment representing an object in the collection.
+	 */
+	public static class DemoCollectionPagerAdapter extends FragmentPagerAdapter {
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
-		switch (v.getId()) {
+		public DemoCollectionPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
 
-		case R.id.transparent_layout:
+		@Override
+		public Fragment getItem(int i) {
+			Fragment fragment = null;
+			switch (i) {
+			case 0:
+				fragment = new ChangeFragment();
+				return fragment;
 
-			// mGoogleApiClient.connect();
-			if (!mGoogleApiClient.isConnecting()) {
-				mSignInClicked = true;
-				// if(!mGoogleApiClient.isConnected()){
-				resolveSignInError();
-				// }else{
-				// Toast.makeText(getApplicationContext(), "Already Connected",
-				// Toast.LENGTH_SHORT).show();
-				// }
+			case 1:
+				fragment = new ProfileFragment();
+/*				
+				try {
+		            mCallback = (OnScroll) fragment;
+		        } catch (ClassCastException e) {
+		            throw new ClassCastException(fragment.toString()
+		                    + " must implement OnFileSelectedListener");
+		        }
+*/				
+				return fragment;
+
+			default:
+				break;
 			}
 
-			break;
-
-		/*
-		 * case R.id.google_plus_logout_button :
-		 * 
-		 * if (mGoogleApiClient.isConnected()) {
-		 * Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-		 * mGoogleApiClient.disconnect(); //mGoogleApiClient.connect();
-		 * Toast.makeText(getApplicationContext(), "Signed Out",
-		 * Toast.LENGTH_SHORT).show(); } else {
-		 * Toast.makeText(getApplicationContext(), "Already Signed Out",
-		 * Toast.LENGTH_SHORT).show(); }
-		 * 
-		 * break;
-		 */
-		}
-	}
-
-	@Override
-	public void onNavigationDrawerItemSelected(int position) {
-		// update the main content by replacing fragments
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		Fragment fragment = null;
-
-		switch (position) {
-		case R.id.navigation_drawer_item_0:
-			fragment = new ChangeFragment();
-			break;
-
-		case R.id.navigation_drawer_item_1:
-			// To be replaced afterwards with the fragment
-			fragment = new ProfileFragment();
-			break;
-
-		case R.id.navigation_drawer_item_2:
-			// To be replaced afterwards with the fragment
-			fragment = new ChangeFragment();
-			break;
-
-		default:
-			break;
+			return fragment;
 		}
 
-		fragmentManager.beginTransaction().replace(R.id.container, fragment)
-				.commit();
-	}
-
-	public void onSectionAttached(int number) {
-		switch (number) {
-		case 1:
-			mTitle = getString(R.string.title_section1);
-			break;
-		case 2:
-			mTitle = getString(R.string.title_section2);
-			break;
-		case 3:
-			mTitle = getString(R.string.title_section3);
-			break;
-		}
-	}
-
-	@Override
-	public void onConnectionFailed(ConnectionResult result) {
-		/*
-		 * if (!mIntentInProgress && result.hasResolution()) { try {
-		 * mIntentInProgress = true;
-		 * startIntentSenderForResult(result.getResolution().getIntentSender(),
-		 * RC_SIGN_IN, null, 0, 0, 0); } catch (SendIntentException e) { // The
-		 * intent was canceled before it was sent. Return to the default //
-		 * state and attempt to connect to get an updated ConnectionResult.
-		 * mIntentInProgress = false; mGoogleApiClient.connect(); } }
-		 */
-
-		if (!result.hasResolution()) {
-			GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
-					0).show();
-			return;
+		@Override
+		public int getCount() {
+			// For this contrived example, we have a 100-object collection.
+			return 2;
 		}
 
-		if (!mIntentInProgress) {
-			// Store the ConnectionResult so that we can use it later when the
-			// user clicks
-			// 'sign-in'.
-			mConnectionResult = result;
+		@Override
+		public CharSequence getPageTitle(int position) {
+			switch (position) {
+			case 0:
+				return ("Change");
 
-			if (mSignInClicked) {
-				// The user has already clicked 'sign-in' so we attempt to
-				// resolve all
-				// errors until the user is signed in, or they cancel.
-				resolveSignInError();
+			case 1:
+				return ("Profiles");
+
+			default:
+				break;
 			}
-		}
-	}
-
-	@Override
-	public void onConnected(Bundle connectionHint) {
-		// We've resolved any connection errors. mGoogleApiClient can be used to
-		// access Google APIs on behalf of the user.
-		mSignInClicked = false;
-		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-		if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-			Person currentPerson = Plus.PeopleApi
-					.getCurrentPerson(mGoogleApiClient);
-			mNavigationDrawerFragment.showUserName(currentPerson
-					.getDisplayName());
-			new GetProfilePic().execute(currentPerson.getImage().getUrl());
-			mNavigationDrawerFragment.showEmailId(Plus.AccountApi
-					.getAccountName(mGoogleApiClient));
-			// String personGooglePlusProfile = currentPerson.getUrl();
-		}
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int responseCode,
-			Intent intent) {
-		if (requestCode == RC_SIGN_IN) {
-
-			if (responseCode != RESULT_OK) {
-				mSignInClicked = false;
-			}
-
-			mIntentInProgress = false;
-
-			if (!mGoogleApiClient.isConnecting()) {
-				mGoogleApiClient.connect();
-			}
-		}
-	}
-
-	@Override
-	public void onConnectionSuspended(int cause) {
-		mGoogleApiClient.connect();
-	}
-
-	/* A helper method to resolve the current ConnectionResult error. */
-	private void resolveSignInError() {
-		if (mConnectionResult.hasResolution()) {
-			try {
-				mIntentInProgress = true;
-				// startIntentSenderForResult(mConnectionResult.getResolution().getIntentSender(),
-				// RC_SIGN_IN, null, 0, 0, 0);
-				mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
-			} catch (SendIntentException e) {
-				// The intent was canceled before it was sent. Return to the
-				// default
-				// state and attempt to connect to get an updated
-				// ConnectionResult.
-				mIntentInProgress = false;
-				mGoogleApiClient.connect();
-			}
-		}
-	}
-
-	private class GetProfilePic extends AsyncTask<String, Void, Bitmap> {
-
-		protected Bitmap doInBackground(String... params) {
-			String profilePicUrl = params[0];
-			Bitmap profilePic = null;
-
-			InputStream in;
-			try {
-				in = new URL(profilePicUrl).openStream();
-				profilePic = BitmapFactory.decodeStream(in);
-			} catch (MalformedURLException e) {
-				Log.e("Error", e.getMessage());
-				e.printStackTrace();
-			} catch (IOException e) {
-				Log.e("Error", e.getMessage());
-				e.printStackTrace();
-			} catch (Exception e) {
-				Log.e("Error", e.getMessage());
-				e.printStackTrace();
-			}
-
-			return profilePic;
+			return null;
 		}
 
-		protected void onPostExecute(Bitmap result) {
-			mNavigationDrawerFragment.showUserProfilePic(result);
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			Fragment fragment = (Fragment) super.instantiateItem(container,
+					position);
+			registeredFragments.put(position, fragment);
+			return fragment;
 		}
-	}
 
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			registeredFragments.remove(position);
+			super.destroyItem(container, position, object);
+		}
+
+		public Fragment getRegisteredFragment(int position) {
+			return registeredFragments.get(position);
+		}
+
+	}
 }

@@ -2,34 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:padding="5dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#6EC07C" />
 
     <EditText
         android:id="@+id/dialog_profile_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Profile Name"
-        android:ems="10" />
+        android:singleLine="true"
+        android:layout_marginBottom="1dp"/>
 
     <EditText
+        android:layout_marginBottom="1dp"
         android:id="@+id/dialog_profile_build_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Build Id"
-        android:ems="10" />
+        android:singleLine="true" />
 
     <EditText
+        android:layout_marginBottom="1dp"
         android:id="@+id/dialog_profile_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Android Version"
-        android:ems="10" />
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/dialog_profile_model"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Model"
-        android:ems="10" />
+        android:singleLine="true" />
 
 </LinearLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Update Android</string>
+    <string name="app_name">Update</string>
     <string name="title_section1">Change</string>
     <string name="title_section2">Profile</string>
     <string name="title_section3">Settings</string>

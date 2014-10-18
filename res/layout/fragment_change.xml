@@ -1,75 +1,90 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/White" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F0F0"
+    tools:context="com.apprevelations.updateandroid.MainActivity" >
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp"
+        android:background="@drawable/shape3"
+        android:fontFamily="sans-serif-light"
+        android:hint="Build no"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColorHint="#bdbdbd" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-    	android:padding="20dp"
-    	android:background="@color/White"
-        android:orientation="vertical" >
+        android:layout_below="@+id/editText3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"
+        android:background="@drawable/shape"
+        android:padding="10dp" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-        	android:padding="20dp"
-        	android:gravity="center"
-        	android:layout_marginTop="15dp"
-        	android:background="#F7F7F7" >
-            
-            <EditText
-        	    android:id="@+id/editText1"
-	            android:layout_width="match_parent"
-        		android:layout_height="wrap_content"
-        		android:padding="10dp"
-        		android:background="@drawable/edittext"
-        		android:hint="Build Id"
-        		android:ems="10" >
-        	</EditText>
-	
-    	    <EditText
-            	android:id="@+id/editText2"
-            	android:layout_width="match_parent"
-        		android:layout_height="wrap_content"
-        		android:padding="10dp"
-        		android:background="@drawable/edittext"
-        		android:hint="Android Version"
-        		android:ems="10" />
-    	    
-    	    <EditText
-            	android:id="@+id/editText3"
-            	android:layout_width="match_parent"
-        		android:layout_height="wrap_content"
-        		android:padding="10dp"
-        		android:background="@drawable/edittext"
-        		android:hint="Model Number"
-        		android:ems="10" />
-
-        	<Button
-	            android:id="@+id/button1"
-    	        android:layout_width="match_parent"
-        		android:layout_height="wrap_content"
-        		android:layout_gravity="center"
-        		android:layout_marginTop="5dp"
-        		android:padding="10dp"
-        		android:text="Commit changes"
-        		android:background="@drawable/button" />
-        
-        </LinearLayout>
-        
-        <Button
-            android:id="@+id/button2"
-           	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:background="@color/White"
-        	android:layout_gravity="right"
-        	android:textColor="#4A8BF5"
-        	android:text="Reset to Default" />
-        
+            android:layout_gravity="center"
+            android:text="Apply Changes"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
     </LinearLayout>
-    
-</ScrollView>
+
+    <LinearLayout
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/shape"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Reset"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_below="@+id/editText1"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/shape3"
+        android:fontFamily="sans-serif-light"
+        android:hint="Android Version"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColorHint="#bdbdbd" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/editText2"
+        android:layout_below="@+id/editText2"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/shape3"
+        android:fontFamily="sans-serif-light"
+        android:hint="Model"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColorHint="#bdbdbd" />
+
+</RelativeLayout>

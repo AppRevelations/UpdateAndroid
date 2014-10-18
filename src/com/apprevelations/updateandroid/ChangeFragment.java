@@ -18,8 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class ChangeFragment extends Fragment implements OnClickListener {
@@ -29,10 +29,9 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 	private int NO_OF_PROPERTIES = 3;
 
 	private boolean isRooted;
-	private Process suProcess;
 	private DataOutputStream dos;
 
-	private Button update, reset;
+	private LinearLayout update, reset;
 	private EditText name, version, model;
 	public static final File orig = new File("/system", "build.prop");
 	public static final File temp = new File("/system", "build1.prop");
@@ -46,11 +45,6 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 	public static final String VERSION = "ro.build.version.release=";
 	private BufferedWriter writer;
 
-	/**
-	 * The fragment argument representing the section number for this fragment.
-	 */
-	private static final String ARG_SECTION_NUMBER = "1";
-
 	public ChangeFragment() {
 		setHasOptionsMenu(true);
 	}
@@ -62,19 +56,14 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 		View rootView = inflater.inflate(R.layout.fragment_change, container,
 				false);
 
-		update = (Button) rootView.findViewById(R.id.button1);
-		reset = (Button) rootView.findViewById(R.id.button2);
+		update = (LinearLayout) rootView.findViewById(R.id.button1);
+		reset = (LinearLayout) rootView.findViewById(R.id.button2);
 
 		name = (EditText) rootView.findViewById(R.id.editText1);
 		version = (EditText) rootView.findViewById(R.id.editText2);
 		model = (EditText) rootView.findViewById(R.id.editText3);
 
-		if (isRooted) {
-			backupOriginal();
-			showCurrentProperties();
-		} else {
-			showCurrentProperties();
-		}
+		showCurrentProperties();
 
 		update.setOnClickListener(this);
 		reset.setOnClickListener(this);
@@ -176,7 +165,7 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 				dos.writeBytes("mount -o ro,remount /system\n");
 				Toast.makeText(getActivity(), "Original file restored",
 						Toast.LENGTH_SHORT).show();
-				
+
 				showCurrentProperties();
 
 				new MyCustomDialog(getActivity()).show(
@@ -197,14 +186,14 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 	}
 
 	public void commitChanges() {
-		
-		backupOriginal();
-		
+
 		if (!isRooted) {
 			Toast.makeText(getActivity(), "Phone not rooted!!!",
 					Toast.LENGTH_SHORT).show();
 			return;
 		}
+		
+		backupOriginal();
 
 		try {
 			dos.writeBytes("mount -o rw,remount /system\n");
@@ -275,9 +264,9 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 
 			Toast.makeText(getActivity(), "Changes Commited!!!",
 					Toast.LENGTH_SHORT).show();
-			
+
 			showCurrentProperties();
-			
+
 			new MyCustomDialog(getActivity()).show(getChildFragmentManager(),
 					TAG_REBOOT_DIALOG);
 
@@ -298,7 +287,7 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 		 * new MyCustomDialog(getActivity()).show(getChildFragmentManager(),
 		 * TAG_REBOOT_DIALOG);
 		 */
-		
+
 		// ------------------
 
 		// updateVisibility(); not needed here as this only do changes in
@@ -358,13 +347,10 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		((MainActivity) activity).onSectionAttached(Integer
-				.parseInt(this.ARG_SECTION_NUMBER));
 
-		UpdateApplication updateApplication = (UpdateApplication) getActivity()
+		UpdateApplication updateApplication = (UpdateApplication) activity
 				.getApplicationContext();
 		isRooted = updateApplication.isRooted();
-		suProcess = updateApplication.getSuProcess();
 		dos = updateApplication.getDataOutputStream();
 	}
 

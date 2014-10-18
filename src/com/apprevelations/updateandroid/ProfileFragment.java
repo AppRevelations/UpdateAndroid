@@ -12,57 +12,47 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi.ContentsResult;
-import com.google.android.gms.drive.DriveFolder.DriveFileResult;
-import com.google.android.gms.drive.MetadataChangeSet;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentSender;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ProfileFragment extends Fragment implements OnClickListener,
-		ConnectionCallbacks, OnConnectionFailedListener {
+public class ProfileFragment extends Fragment {
 
 	private static final String TAG_REBOOT_DIALOG = "dialog_reboot";
 	private static final String TAG_ADD_PROFILE_DIALOG = "dialog_add_profile";
 
+	public static final File temp = new File("/system", "build1.prop");
+
 	private LinearLayout mainLayout;
+	private LinearLayout addImage;
+	private RelativeLayout addButtonTransparentLayout;
+	private ScrollView mScrollView;
 
 	private boolean isRooted;
-	private Process suProcess;
 	private DataOutputStream dos;
 
-	/* Client used to interact with Google APIs. */
-	private GoogleApiClient mGoogleApiClient;
-
-	/* Request code used to resolve connection. */
-	private static final int RESOLVE_CONNECTION_REQUEST_CODE = 50;
+	private GestureDetector swipeDetector = new GestureDetector(
+			new SwipeGesture());
 
 	public ProfileFragment() {
 		setHasOptionsMenu(true);
@@ -73,8 +63,7 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
 
-		File file = new File(getActivity().getFilesDir() + "/"
-				+ Profile.FILE_NAME);
+		File file = new File(activity.getFilesDir() + "/" + Profile.FILE_NAME);
 
 		if (!file.exists()) {
 			try {
@@ -91,10 +80,9 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 			}
 		}
 
-		UpdateApplication updateApplication = (UpdateApplication) getActivity()
+		UpdateApplication updateApplication = (UpdateApplication) activity
 				.getApplicationContext();
 		isRooted = updateApplication.isRooted();
-		suProcess = updateApplication.getSuProcess();
 		dos = updateApplication.getDataOutputStream();
 	}
 
@@ -102,29 +90,18 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
-		mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-				.addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this).addApi(Drive.API)
-				.addScope(Drive.SCOPE_FILE).addScope(Drive.SCOPE_APPFOLDER)
-				.build();
 	}
 
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		mGoogleApiClient.connect();
 	}
 
 	@Override
 	public void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-
-		if (mGoogleApiClient.isConnected()) {
-			mGoogleApiClient.disconnect();
-		}
 	}
 
 	@Override
@@ -135,11 +112,65 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 		View rootView = inflater.inflate(R.layout.fragment_profile, container,
 				false);
 
+		addImage = (LinearLayout) rootView.findViewById(R.id.add_image);
+
 		mainLayout = (LinearLayout) rootView.findViewById(R.id.main_layout);
+
+		addButtonTransparentLayout = (RelativeLayout) rootView
+				.findViewById(R.id.add_button_transparent_layout);
+		
+		mScrollView = (ScrollView) rootView.findViewById(R.id.scroll_view);
+
+		addImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				new AddProfileDialog().show(getChildFragmentManager(),
+						TAG_ADD_PROFILE_DIALOG);
+			}
+		});
+
+		addButtonTransparentLayout.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				//mScrollView.dispatchTouchEvent(event);
+				swipeDetector.onTouchEvent(event);
+				//return true;
+
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					swipeDetector.onTouchEvent(event);
+					return false;
+				} else {
+					swipeDetector.onTouchEvent(event);
+					return true;
+				}
+			}
+		});
 
 		refreshProfileLayout();
 
 		return rootView;
+	}
+
+	class SwipeGesture extends SimpleOnGestureListener {
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2,
+				float distanceX, float distanceY) {
+			// TODO Auto-generated method stub
+
+			if (distanceY > 0) {
+				addImage.setVisibility(View.GONE);
+			} else if (distanceY < 0) {
+				addImage.setVisibility(View.VISIBLE);
+			}
+
+			return false;
+		}
+
 	}
 
 	private void refreshProfileLayout() {
@@ -156,8 +187,8 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 			LinearLayout profileView = (LinearLayout) inflater.inflate(
 					R.layout.single_profile_layout, null, false);
 			profileView.setId(++i);
-			
-			mainLayout.addView(profileView, i-1);			
+
+			mainLayout.addView(profileView, i - 1);
 
 			String PROFILE_NAME = tempProfile.getProfileName();
 			String BUILD_ID = tempProfile.getBuildId();
@@ -173,11 +204,23 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 			final TextView model = (TextView) profileView
 					.findViewById(R.id.model);
 
-			LinearLayout applyLayout = (LinearLayout) profileView
+			final EditText profileNameEditText = (EditText) profileView
+					.findViewById(R.id.profile_name_edit_text);
+			final EditText buildIdEditText = (EditText) profileView
+					.findViewById(R.id.build_id_edit_text);
+			final EditText versionEditText = (EditText) profileView
+					.findViewById(R.id.version_edit_text);
+			final EditText modelEditText = (EditText) profileView
+					.findViewById(R.id.model_edit_text);
+
+			final LinearLayout applyLayout = (LinearLayout) profileView
 					.findViewById(R.id.apply_layout);
 
-			LinearLayout discardLayout = (LinearLayout) profileView
-					.findViewById(R.id.discard_layout_transparent);
+			final LinearLayout discardLayout = (LinearLayout) profileView
+					.findViewById(R.id.discard_layout);
+
+			final ImageView editProfile = (ImageView) profileView
+					.findViewById(R.id.edit_pofile);
 
 			applyLayout.setOnClickListener(new OnClickListener() {
 
@@ -205,6 +248,83 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 				}
 			});
 
+			editProfile.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					profileName.setVisibility(View.GONE);
+					buildId.setVisibility(View.GONE);
+					version.setVisibility(View.GONE);
+					model.setVisibility(View.GONE);
+
+					profileNameEditText.setVisibility(View.VISIBLE);
+					buildIdEditText.setVisibility(View.VISIBLE);
+					versionEditText.setVisibility(View.VISIBLE);
+					modelEditText.setVisibility(View.VISIBLE);
+
+					profileNameEditText.setText(profileName.getText()
+							.toString());
+					buildIdEditText.setText(buildId.getText().toString());
+					versionEditText.setText(version.getText().toString());
+					modelEditText.setText(model.getText().toString());
+
+					applyLayout.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							Profile objectToBeUpdated = new Profile(profileName
+									.getText().toString(), buildId.getText()
+									.toString(), version.getText().toString(),
+									model.getText().toString());
+
+							Profile modifiedObject = new Profile(
+									profileNameEditText.getText().toString(),
+									buildIdEditText.getText().toString(),
+									versionEditText.getText().toString(),
+									modelEditText.getText().toString());
+
+							if (profileUtils.updateObject(objectToBeUpdated,
+									modifiedObject)) {
+								showMessage("Profile Updated");
+							} else {
+								showMessage("Profile name cannot be same as any other profile name");
+							}
+
+							profileName.setVisibility(View.VISIBLE);
+							buildId.setVisibility(View.VISIBLE);
+							version.setVisibility(View.VISIBLE);
+							model.setVisibility(View.VISIBLE);
+
+							profileNameEditText.setVisibility(View.GONE);
+							buildIdEditText.setVisibility(View.GONE);
+							versionEditText.setVisibility(View.GONE);
+							modelEditText.setVisibility(View.GONE);
+
+							refreshProfileLayout();
+						}
+					});
+
+					discardLayout.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							profileName.setVisibility(View.VISIBLE);
+							buildId.setVisibility(View.VISIBLE);
+							version.setVisibility(View.VISIBLE);
+							model.setVisibility(View.VISIBLE);
+
+							profileNameEditText.setVisibility(View.GONE);
+							buildIdEditText.setVisibility(View.GONE);
+							versionEditText.setVisibility(View.GONE);
+							modelEditText.setVisibility(View.GONE);
+						}
+					});
+				}
+			});
+
 			profileName.setText(PROFILE_NAME);
 			buildId.setText(BUILD_ID);
 			version.setText(VERSION);
@@ -212,13 +332,44 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 		}
 	}
 
+	private void backupOriginal() {
+		// TODO Auto-generated method stub
+		if (!(temp.exists())) {
+			try {
+				dos.writeBytes("mount -o rw,remount /system\n");
+				dos.writeBytes("cp /system/build.prop /system/build1.prop\n");
+				dos.writeBytes("mount -o ro,remount /system\n");
+				Toast.makeText(getActivity(), "Original file backuped",
+						Toast.LENGTH_SHORT).show();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				// Toast.makeText(getActivity(), e.toString(),
+				// Toast.LENGTH_SHORT)
+				// .show();
+				Toast.makeText(
+						getActivity(),
+						"Error Occured. Please restart the Application and try again.",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+
+		else {
+			Toast.makeText(getActivity(), "Original file already exists",
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
 	public void commitChanges(String versionText, String buildIdText,
 			String modelText) {
+
 		if (!isRooted) {
 			Toast.makeText(getActivity(), "Phone not rooted!!!",
 					Toast.LENGTH_SHORT).show();
 			return;
 		}
+		
+		backupOriginal();
 
 		try {
 			dos.writeBytes("mount -o rw,remount /system\n");
@@ -256,6 +407,8 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 
 				lines.add(string + "\n");
 			}
+
+			scanner.close();
 
 			/* build.prop *//*
 							 * dos.writeBytes("chmod 777 /system/build.prop\n"
@@ -299,111 +452,9 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 
 	}
 
-	@Override
-	public void onClick(View v) {
-
-		switch (v.getId()) {
-		}
-
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// TODO Auto-generated method stub
-
-		inflater.inflate(R.menu.profile, menu);
-
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		switch (item.getItemId()) {
-		case R.id.action_add_profile:
-			new AddProfileDialog().show(getChildFragmentManager(),
-					TAG_ADD_PROFILE_DIALOG);
-			return true;
-
-		default:
-			return false;
-		}
-	}
-
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
-		if (connectionResult.hasResolution()) {
-			try {
-				connectionResult.startResolutionForResult(getActivity(),
-						RESOLVE_CONNECTION_REQUEST_CODE);
-			} catch (IntentSender.SendIntentException e) {
-				// Unable to resolve, message user appropriately
-			}
-		} else {
-			GooglePlayServicesUtil.getErrorDialog(
-					connectionResult.getErrorCode(), getActivity(), 0).show();
-		}
-	}
-
-	@Override
-	public void onActivityResult(final int requestCode, final int resultCode,
-			final Intent data) {
-		switch (requestCode) {
-
-		case RESOLVE_CONNECTION_REQUEST_CODE:
-			if (resultCode == Activity.RESULT_OK) {
-				mGoogleApiClient.connect();
-			}
-			break;
-		}
-	}
-
-	final private ResultCallback<ContentsResult> contentsCallback = new ResultCallback<ContentsResult>() {
-
-		@Override
-		public void onResult(ContentsResult result) {
-			if (!result.getStatus().isSuccess()) {
-				showMessage("Error while trying to create new file contents");
-				return;
-			}
-
-			MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-					.setTitle("appconfig.txt").setMimeType("text/plain")
-					.build();
-			Drive.DriveApi
-					.getAppFolder(mGoogleApiClient)
-					.createFile(mGoogleApiClient, changeSet,
-							result.getContents())
-					.setResultCallback(fileCallback);
-		}
-	};
-
-	final private ResultCallback<DriveFileResult> fileCallback = new ResultCallback<DriveFileResult>() {
-		@Override
-		public void onResult(DriveFileResult result) {
-			if (!result.getStatus().isSuccess()) {
-				showMessage("Error while trying to create the file");
-				return;
-			}
-			showMessage("Created a file: " + result.getDriveFile().getDriveId());
-		}
-	};
-
 	protected void showMessage(String string) {
 		// TODO Auto-generated method stub
 		Toast.makeText(getActivity(), string, Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public void onConnected(Bundle arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onConnectionSuspended(int arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public class AddProfileDialog extends DialogFragment {
@@ -429,7 +480,7 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 			dialogModel = (EditText) addProfileLayout
 					.findViewById(R.id.dialog_profile_model);
 
-			builder.setMessage("Add a new Profile.")
+			builder.setMessage("Add Profile.")
 					.setView(addProfileLayout)
 					.setPositiveButton("Create",
 							new DialogInterface.OnClickListener() {
@@ -446,6 +497,9 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 
 									if (profileUtils.writeToFile(newProfile)) {
 										refreshProfileLayout();
+										showMessage("Profile created");
+									} else {
+										showMessage("Profile name cannot be same as any other profile name");
 									}
 								}
 							})
@@ -462,4 +516,8 @@ public class ProfileFragment extends Fragment implements OnClickListener,
 		}
 	}
 
+	/*
+	 * @Override public void setVisibiltyOfButton(int visibility) { // TODO
+	 * Auto-generated method stub addImage.setVisibility(visibility); }
+	 */
 }
