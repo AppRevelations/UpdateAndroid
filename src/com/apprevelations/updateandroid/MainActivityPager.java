@@ -18,7 +18,7 @@ public class MainActivityPager extends FragmentActivity implements OnClickListen
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	TextView skip;
-	Button bt1,bt2,bt3,bt4;
+	Button bt1,bt2,bt3,bt4,gpp;
 	
 
 	@SuppressLint("NewApi")
@@ -30,6 +30,7 @@ public class MainActivityPager extends FragmentActivity implements OnClickListen
 		bt1=(Button) findViewById(R.id.btn1);
     	bt2=(Button) findViewById(R.id.btn2);
     	bt3=(Button) findViewById(R.id.btn3);
+    	gpp=(Button) findViewById(R.id.gapp);
     	skip=(TextView)findViewById(R.id.tskip);
 		skip.setOnClickListener(this);
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -44,6 +45,24 @@ public class MainActivityPager extends FragmentActivity implements OnClickListen
 			public void onPageSelected(int position) {
 				
 				btnAction(position);
+				if(position==2)
+				{
+					skip.setVisibility(View.INVISIBLE);
+					gpp=(Button)findViewById(R.id.gapp);
+			    	gpp.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+					
+							Intent igapp=new Intent(MainActivityPager.this,com.apprevelations.updateandroid.MainActivity.class);
+							   startActivity(igapp);
+							  
+						}
+					});
+				}
+				else
+					skip.setVisibility(View.VISIBLE);
 			}
 
 			@Override
@@ -93,6 +112,7 @@ public class MainActivityPager extends FragmentActivity implements OnClickListen
 				   Intent imain=new Intent(MainActivityPager.this,com.apprevelations.updateandroid.MainActivity.class);
 				   startActivity(imain);
 				    break;
+			
 		}
 	}
 	
