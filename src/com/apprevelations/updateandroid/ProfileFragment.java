@@ -36,10 +36,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements
+		MainActivity.OnBackPressed {
 
 	private static final String TAG_REBOOT_DIALOG = "dialog_reboot";
 	private static final String TAG_ADD_PROFILE_DIALOG = "dialog_add_profile";
+
+	private static ArrayList<LinearLayout> currentProfileBeingEdited = new ArrayList<LinearLayout>();
 
 	public static final File temp = new File("/system", "build1.prop");
 
@@ -118,7 +121,7 @@ public class ProfileFragment extends Fragment {
 
 		addButtonTransparentLayout = (RelativeLayout) rootView
 				.findViewById(R.id.add_button_transparent_layout);
-		
+
 		mScrollView = (ScrollView) rootView.findViewById(R.id.scroll_view);
 
 		addImage.setOnClickListener(new OnClickListener() {
@@ -136,9 +139,9 @@ public class ProfileFragment extends Fragment {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
-				//mScrollView.dispatchTouchEvent(event);
+				// mScrollView.dispatchTouchEvent(event);
 				swipeDetector.onTouchEvent(event);
-				//return true;
+				// return true;
 
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					swipeDetector.onTouchEvent(event);
@@ -269,6 +272,8 @@ public class ProfileFragment extends Fragment {
 					versionEditText.setText(version.getText().toString());
 					modelEditText.setText(model.getText().toString());
 
+					currentProfileBeingEdited.add(discardLayout);
+
 					applyLayout.setOnClickListener(new OnClickListener() {
 
 						@Override
@@ -368,7 +373,7 @@ public class ProfileFragment extends Fragment {
 					Toast.LENGTH_SHORT).show();
 			return;
 		}
-		
+
 		backupOriginal();
 
 		try {
@@ -480,8 +485,7 @@ public class ProfileFragment extends Fragment {
 			dialogModel = (EditText) addProfileLayout
 					.findViewById(R.id.dialog_profile_model);
 
-			builder.setMessage("Add Profile.")
-					.setView(addProfileLayout)
+			builder.setView(addProfileLayout)
 					.setPositiveButton("Create",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
@@ -516,8 +520,19 @@ public class ProfileFragment extends Fragment {
 		}
 	}
 
-	/*
-	 * @Override public void setVisibiltyOfButton(int visibility) { // TODO
-	 * Auto-generated method stub addImage.setVisibility(visibility); }
-	 */
+	@Override
+	public boolean onBackPressed() {
+		// TODO Auto-generated method stub
+
+		if (!currentProfileBeingEdited.isEmpty()) {
+			for (LinearLayout tempDiscardLayour : currentProfileBeingEdited) {
+				tempDiscardLayour.performClick();
+			}
+			currentProfileBeingEdited.clear();
+			
+			return false;
+		}
+
+		return true;
+	}
 }
