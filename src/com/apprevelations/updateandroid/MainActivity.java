@@ -54,11 +54,13 @@ public class MainActivity extends ActionBarActivity {
 	 * object collection.
 	 */
 	ViewPager mViewPager;
-	
-//	static OnScroll mCallback;
 
-//	private GestureDetector swipeDetector = new GestureDetector(
-//			new SwipeGesture());
+	private boolean isRooted;
+
+	// static OnScroll mCallback;
+
+	// private GestureDetector swipeDetector = new GestureDetector(
+	// new SwipeGesture());
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class MainActivity extends ActionBarActivity {
 		UpdateApplication updateApplication = (UpdateApplication) getApplicationContext();
 		suProcess = updateApplication.getSuProcess();
 		dos = updateApplication.getDataOutputStream();
+		isRooted = updateApplication.isRooted();
 
 		// Create an adapter that when requested, will return a fragment
 		// representing an object in
@@ -95,53 +98,38 @@ public class MainActivity extends ActionBarActivity {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mDemoCollectionPagerAdapter);
 
-/*		mViewPager.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					return false;
-				} else {
-					swipeDetector.onTouchEvent(event);
-					return true;
-				}
-			}
-		});
-*/
+		/*
+		 * mViewPager.setOnTouchListener(new OnTouchListener() {
+		 * 
+		 * @Override public boolean onTouch(View v, MotionEvent event) { if
+		 * (event.getAction() == MotionEvent.ACTION_DOWN) { return false; } else
+		 * { swipeDetector.onTouchEvent(event); return true; } } });
+		 */
 	}
 
-/*	class SwipeGesture extends SimpleOnGestureListener {
-
-		@Override
-		public boolean onScroll(MotionEvent e1, MotionEvent e2,
-				float distanceX, float distanceY) {
-			// TODO Auto-generated method stub
-
-			if (e1.getY() > e2.getY()) {
-				// addImage.setVisibility(View.GONE);
-				mCallback.setVisibiltyOfButton(View.GONE);
-			} else if (e1.getY() < e2.getY()) {
-				// addImage.setVisibility(View.VISIBLE);
-				mCallback.setVisibiltyOfButton(View.VISIBLE);
-			}
-
-			return true;
-		}
-
-	}
-	
-	public interface OnScroll {
-        public void setVisibiltyOfButton(int visibility);
-    }
-
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-		// TODO Auto-generated method stub
-		super.dispatchTouchEvent(ev);
-		
-		return swipeDetector.onTouchEvent(ev);
-	}
-*/
+	/*
+	 * class SwipeGesture extends SimpleOnGestureListener {
+	 * 
+	 * @Override public boolean onScroll(MotionEvent e1, MotionEvent e2, float
+	 * distanceX, float distanceY) { // TODO Auto-generated method stub
+	 * 
+	 * if (e1.getY() > e2.getY()) { // addImage.setVisibility(View.GONE);
+	 * mCallback.setVisibiltyOfButton(View.GONE); } else if (e1.getY() <
+	 * e2.getY()) { // addImage.setVisibility(View.VISIBLE);
+	 * mCallback.setVisibiltyOfButton(View.VISIBLE); }
+	 * 
+	 * return true; }
+	 * 
+	 * }
+	 * 
+	 * public interface OnScroll { public void setVisibiltyOfButton(int
+	 * visibility); }
+	 * 
+	 * @Override public boolean dispatchTouchEvent(MotionEvent ev) { // TODO
+	 * Auto-generated method stub super.dispatchTouchEvent(ev);
+	 * 
+	 * return swipeDetector.onTouchEvent(ev); }
+	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -155,17 +143,20 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		try {
-			Toast.makeText(this, "Exiting Application", Toast.LENGTH_SHORT)
-					.show();
-			dos.writeBytes("exit\n");
-			suProcess.waitFor();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		if (isRooted) {
+			try {
+				Toast.makeText(this, "Exiting Application", Toast.LENGTH_SHORT)
+						.show();
+				dos.writeBytes("exit\n");
+				suProcess.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -232,14 +223,12 @@ public class MainActivity extends ActionBarActivity {
 
 			case 1:
 				fragment = new ProfileFragment();
-/*				
-				try {
-		            mCallback = (OnScroll) fragment;
-		        } catch (ClassCastException e) {
-		            throw new ClassCastException(fragment.toString()
-		                    + " must implement OnFileSelectedListener");
-		        }
-*/				
+				/*
+				 * try { mCallback = (OnScroll) fragment; } catch
+				 * (ClassCastException e) { throw new
+				 * ClassCastException(fragment.toString() +
+				 * " must implement OnFileSelectedListener"); }
+				 */
 				return fragment;
 
 			default:
