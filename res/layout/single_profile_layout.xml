@@ -10,7 +10,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:background="#f0f0f0"
+        android:background="@drawable/roundedgeprofile"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -143,9 +143,13 @@
                 android:id="@+id/apply_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#6EC07C"
+                android:background="@drawable/roundedge"
                 android:gravity="center_vertical"
-                android:padding="5dp" >
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                 >
 
                 <TextView
                     android:id="@+id/apply_textview"
@@ -172,9 +176,12 @@
                 android:id="@+id/discard_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#6EC07C"
+                android:background="@drawable/roundedge"
                 android:gravity="center"
-                android:padding="5dp" >
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" >
 
                 <TextView
                     android:id="@+id/discard_textview"
