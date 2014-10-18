@@ -131,7 +131,7 @@ public class ProfileFragment extends Fragment {
 			}
 		});
 
-		addButtonTransparentLayout.setOnTouchListener(new OnTouchListener() {
+		mScrollView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -145,7 +145,7 @@ public class ProfileFragment extends Fragment {
 					return false;
 				} else {
 					swipeDetector.onTouchEvent(event);
-					return true;
+					return false;
 				}
 			}
 		});
