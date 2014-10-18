@@ -61,6 +61,7 @@
             android:layout_marginRight="18dp"
             android:fontFamily="sans-serif-light"
             android:text="Skip"
+            android:padding="15dp"
             android:textColor="#90000000"
             android:textSize="18sp" />
 
