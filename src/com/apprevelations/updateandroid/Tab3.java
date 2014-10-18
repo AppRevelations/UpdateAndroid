@@ -18,3 +18,4 @@ public class Tab3 extends Fragment {
 		return rootView;
 	}
 }
+ 

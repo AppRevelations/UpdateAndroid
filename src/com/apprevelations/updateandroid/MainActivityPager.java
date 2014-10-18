@@ -1,20 +1,23 @@
 package com.apprevelations.updateandroid;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 @SuppressLint("NewApi")
-public class MainActivityPager extends FragmentActivity 
+public class MainActivityPager extends FragmentActivity implements OnClickListener 
 		 {
 
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
-	
+	TextView skip;
 	Button bt1,bt2,bt3,bt4;
 	
 
@@ -27,8 +30,8 @@ public class MainActivityPager extends FragmentActivity
 		bt1=(Button) findViewById(R.id.btn1);
     	bt2=(Button) findViewById(R.id.btn2);
     	bt3=(Button) findViewById(R.id.btn3);
-    	
-		
+    	skip=(TextView)findViewById(R.id.tskip);
+		skip.setOnClickListener(this);
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
@@ -81,8 +84,19 @@ public class MainActivityPager extends FragmentActivity
 		    	btn.setHeight(h);
 		    	btn.setBackgroundResource(c);
 		    }
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch(v.getId())
+		{
+			case R.id.tskip:
+				   Intent imain=new Intent(MainActivityPager.this,com.apprevelations.updateandroid.MainActivity.class);
+				   startActivity(imain);
+				    break;
+		}
+	}
 	
 
-}
+} 
 
 
