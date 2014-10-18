@@ -485,8 +485,7 @@ public class ProfileFragment extends Fragment implements
 			dialogModel = (EditText) addProfileLayout
 					.findViewById(R.id.dialog_profile_model);
 
-			builder
-					.setView(addProfileLayout)
+			builder.setView(addProfileLayout)
 					.setPositiveButton("Create",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
