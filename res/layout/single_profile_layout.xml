@@ -145,11 +145,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundedge"
                 android:gravity="center_vertical"
+                android:paddingBottom="5dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                 >
+                android:paddingTop="5dp" >
 
                 <TextView
                     android:id="@+id/apply_textview"
@@ -178,10 +177,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundedge"
                 android:gravity="center"
+                android:paddingBottom="5dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp" >
+                android:paddingTop="5dp" >
 
                 <TextView
                     android:id="@+id/discard_textview"
