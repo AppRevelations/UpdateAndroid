@@ -126,6 +126,7 @@ public class MainActivityPager extends FragmentActivity implements OnClickListen
 			case R.id.tskip:
 				   Intent imain=new Intent(MainActivityPager.this,com.apprevelations.updateandroid.MainActivity.class);
 				   startActivity(imain);
+				   finish();
 				    break;
 			
 		}
