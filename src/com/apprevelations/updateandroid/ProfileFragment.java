@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import com.apprevelations.updateandroid.ProfileUtils.ProfileException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -28,10 +30,12 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,11 +52,13 @@ public class ProfileFragment extends Fragment implements
 
 	private LinearLayout mainLayout;
 	private LinearLayout addImage;
-	private RelativeLayout addButtonTransparentLayout;
 	private ScrollView mScrollView;
 
 	private boolean isRooted;
 	private DataOutputStream dos;
+
+	Animation fadeOut;
+	Animation fadeIn;
 
 	private GestureDetector swipeDetector = new GestureDetector(
 			new SwipeGesture());
@@ -63,7 +69,6 @@ public class ProfileFragment extends Fragment implements
 
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
 		super.onAttach(activity);
 
 		File file = new File(activity.getFilesDir() + "/" + Profile.FILE_NAME);
@@ -78,7 +83,6 @@ public class ProfileFragment extends Fragment implements
 					oos.writeObject(i);
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -91,26 +95,22 @@ public class ProfileFragment extends Fragment implements
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	}
 
 	@Override
 	public void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 	}
 
 	@Override
 	public void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 
 		View rootView = inflater.inflate(R.layout.fragment_profile, container,
 				false);
@@ -119,16 +119,12 @@ public class ProfileFragment extends Fragment implements
 
 		mainLayout = (LinearLayout) rootView.findViewById(R.id.main_layout);
 
-		addButtonTransparentLayout = (RelativeLayout) rootView
-				.findViewById(R.id.add_button_transparent_layout);
-
 		mScrollView = (ScrollView) rootView.findViewById(R.id.scroll_view);
 
 		addImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				new AddProfileDialog().show(getChildFragmentManager(),
 						TAG_ADD_PROFILE_DIALOG);
 			}
@@ -138,7 +134,6 @@ public class ProfileFragment extends Fragment implements
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				// mScrollView.dispatchTouchEvent(event);
 				swipeDetector.onTouchEvent(event);
 				// return true;
@@ -153,6 +148,12 @@ public class ProfileFragment extends Fragment implements
 			}
 		});
 
+		fadeOut = AnimationUtils.loadAnimation(getActivity(),
+				R.anim.fadeout);
+
+		fadeIn = AnimationUtils.loadAnimation(getActivity(),
+				R.anim.fadein);
+
 		refreshProfileLayout();
 
 		return rootView;
@@ -163,11 +164,16 @@ public class ProfileFragment extends Fragment implements
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2,
 				float distanceX, float distanceY) {
-			// TODO Auto-generated method stub
 
 			if (distanceY > 0) {
+				if(addImage.getVisibility() != View.GONE) {
+					addImage.startAnimation(fadeOut);
+				}
 				addImage.setVisibility(View.GONE);
 			} else if (distanceY < 0) {
+				if (addImage.getVisibility() != View.VISIBLE) {
+					addImage.startAnimation(fadeIn);
+				}
 				addImage.setVisibility(View.VISIBLE);
 			}
 
@@ -229,7 +235,6 @@ public class ProfileFragment extends Fragment implements
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					commitChanges(buildId.getText().toString(), version
 							.getText().toString(), model.getText().toString());
 				}
@@ -239,7 +244,6 @@ public class ProfileFragment extends Fragment implements
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					Profile profileToBeDeleted = new Profile(profileName
 							.getText().toString(),
 							buildId.getText().toString(), version.getText()
@@ -255,7 +259,6 @@ public class ProfileFragment extends Fragment implements
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					profileName.setVisibility(View.GONE);
 					buildId.setVisibility(View.GONE);
 					version.setVisibility(View.GONE);
@@ -278,7 +281,6 @@ public class ProfileFragment extends Fragment implements
 
 						@Override
 						public void onClick(View v) {
-							// TODO Auto-generated method stub
 							Profile objectToBeUpdated = new Profile(profileName
 									.getText().toString(), buildId.getText()
 									.toString(), version.getText().toString(),
@@ -290,11 +292,14 @@ public class ProfileFragment extends Fragment implements
 									versionEditText.getText().toString(),
 									modelEditText.getText().toString());
 
-							if (profileUtils.updateObject(objectToBeUpdated,
-									modifiedObject)) {
+							try {
+								profileUtils.updateObject(objectToBeUpdated,
+										modifiedObject);
 								showMessage("Profile Updated");
-							} else {
-								showMessage("Profile name cannot be same as any other profile name");
+							} catch (ProfileException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								showMessage(e.getMessage());
 							}
 
 							profileName.setVisibility(View.VISIBLE);
@@ -315,7 +320,6 @@ public class ProfileFragment extends Fragment implements
 
 						@Override
 						public void onClick(View v) {
-							// TODO Auto-generated method stub
 							profileName.setVisibility(View.VISIBLE);
 							buildId.setVisibility(View.VISIBLE);
 							version.setVisibility(View.VISIBLE);
@@ -338,30 +342,21 @@ public class ProfileFragment extends Fragment implements
 	}
 
 	private void backupOriginal() {
-		// TODO Auto-generated method stub
 		if (!(temp.exists())) {
 			try {
 				dos.writeBytes("mount -o rw,remount /system\n");
 				dos.writeBytes("cp /system/build.prop /system/build1.prop\n");
 				dos.writeBytes("mount -o ro,remount /system\n");
-				Toast.makeText(getActivity(), "Original file backuped",
-						Toast.LENGTH_SHORT).show();
+				showMessage("Original file backuped");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				// Toast.makeText(getActivity(), e.toString(),
-				// Toast.LENGTH_SHORT)
-				// .show();
-				Toast.makeText(
-						getActivity(),
-						"Error Occured. Please restart the Application and try again.",
-						Toast.LENGTH_SHORT).show();
+				showMessage("Root permission required !!!");
+
 			}
 		}
 
 		else {
-			Toast.makeText(getActivity(), "Original file already exists",
-					Toast.LENGTH_SHORT).show();
+			showMessage("Original file already exists");
 		}
 	}
 
@@ -369,8 +364,7 @@ public class ProfileFragment extends Fragment implements
 			String modelText) {
 
 		if (!isRooted) {
-			Toast.makeText(getActivity(), "Phone not rooted!!!",
-					Toast.LENGTH_SHORT).show();
+			showMessage("Phone not rooted!!!");
 			return;
 		}
 
@@ -415,10 +409,10 @@ public class ProfileFragment extends Fragment implements
 
 			scanner.close();
 
-			/* build.prop *//*
-							 * dos.writeBytes("chmod 777 /system/build.prop\n"
-							 * );
-							 */
+			/* build.prop */
+			/*
+			 * dos.writeBytes("chmod 777 /system/build.prop\n" );
+			 */
 			// this line has been writen above since writing here leaves no
 			// time
 			// for changing the permission of build.prop to w (writable)
@@ -436,21 +430,15 @@ public class ProfileFragment extends Fragment implements
 			dos.writeBytes("chmod 644 /system/build.prop\n"); /* build.prop */
 			dos.writeBytes("mount -o ro,remount /system\n");
 
-			Toast.makeText(getActivity(), "Changes Commited!!!",
-					Toast.LENGTH_SHORT).show();
+			showMessage("Changes Commited!!!");
+
+			new MyCustomDialog(getActivity()).show(getChildFragmentManager(),
+					TAG_REBOOT_DIALOG);
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT)
-					.show();
+			showMessage("Root permission required !!!");
 		}
-
-		// ------------------
-
-		new MyCustomDialog(getActivity()).show(getChildFragmentManager(),
-				TAG_REBOOT_DIALOG);
-
-		// ------------------
 
 		// updateVisibility(); not needed here as this only do changes in
 		// build.prop
@@ -458,7 +446,6 @@ public class ProfileFragment extends Fragment implements
 	}
 
 	protected void showMessage(String string) {
-		// TODO Auto-generated method stub
 		Toast.makeText(getActivity(), string, Toast.LENGTH_SHORT).show();
 	}
 
@@ -499,11 +486,13 @@ public class ProfileFragment extends Fragment implements
 											dialogVersion.getText().toString(),
 											dialogModel.getText().toString());
 
-									if (profileUtils.writeToFile(newProfile)) {
+									try {
+										profileUtils.writeToFile(newProfile);
 										refreshProfileLayout();
-										showMessage("Profile created");
-									} else {
-										showMessage("Profile name cannot be same as any other profile name");
+									} catch (ProfileException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+										showMessage(e.getMessage());
 									}
 								}
 							})
@@ -515,21 +504,19 @@ public class ProfileFragment extends Fragment implements
 								}
 							});
 
-			// Create the AlertDialog object and return it
 			return builder.create();
 		}
 	}
 
 	@Override
 	public boolean onBackPressed() {
-		// TODO Auto-generated method stub
 
 		if (!currentProfileBeingEdited.isEmpty()) {
 			for (LinearLayout tempDiscardLayour : currentProfileBeingEdited) {
 				tempDiscardLayour.performClick();
 			}
 			currentProfileBeingEdited.clear();
-			
+
 			return false;
 		}
 

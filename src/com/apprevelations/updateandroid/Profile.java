@@ -21,23 +21,16 @@ public class Profile implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		// If the object is compared with itself then return true
 		if (o == this) {
 			return true;
 		}
 
-		/*
-		 * Check if o is an instance of ProfileUtils or not
-		 * "null instanceof [type]" also returns false
-		 */
 		if (!(o instanceof Profile)) {
 			return false;
 		}
 
-		// typecast o to Complex so that we can compare data members
 		Profile profile = (Profile) o;
 
-		// Compare the data members and return accordingly
 		return profile.getProfileName().equals(this.getProfileName())
 				&& profile.getBuildId().equals(this.getBuildId())
 				&& profile.getVersion().equals(this.getVersion())

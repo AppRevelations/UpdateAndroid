@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 public class Tab3 extends Fragment {
 
 	@Override
@@ -14,8 +13,7 @@ public class Tab3 extends Fragment {
 			Bundle savedInstanceState) {
 
 		View rootView = inflater.inflate(R.layout.tab3, container, false);
-		
+
 		return rootView;
 	}
 }
- 

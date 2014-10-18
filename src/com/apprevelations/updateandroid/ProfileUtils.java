@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import android.content.Context;
 
@@ -19,13 +18,21 @@ public class ProfileUtils {
 	}
 
 	synchronized public boolean updateObject(Profile objectToBeUpdated,
-			Profile modifiedObject) {
+			Profile modifiedObject) throws ProfileException {
 		ArrayList<Profile> profileObjects = new ArrayList<Profile>();
+
+		if (modifiedObject.getProfileName().equals("")
+				|| modifiedObject.getBuildId().equals("")
+				|| modifiedObject.getVersion().equals("")
+				|| modifiedObject.getModel().equals("")) {
+			throw new ProfileException("None of the values can be empty");
+		}
 
 		for (Profile tempProfile : profileObjects) {
 			if (tempProfile.getProfileName().equals(
 					modifiedObject.getProfileName())) {
-				return false;
+				throw new ProfileException(
+						"Profile name cannot be same as any other profile name");
 			}
 		}
 
@@ -140,15 +147,24 @@ public class ProfileUtils {
 		return profileObjects;
 	}
 
-	synchronized public boolean writeToFile(Profile newProfile) {
+	synchronized public boolean writeToFile(Profile newProfile)
+			throws ProfileException {
 
 		ArrayList<Profile> profileObjects = new ArrayList<Profile>();
 		profileObjects = readFromFile();
+		
+		if (newProfile.getProfileName().equals("")
+				|| newProfile.getBuildId().equals("")
+				|| newProfile.getVersion().equals("")
+				|| newProfile.getModel().equals("")) {
+			throw new ProfileException("None of the values can be empty");
+		}
 
 		for (Profile tempProfile : profileObjects) {
 			if (tempProfile.getProfileName()
 					.equals(newProfile.getProfileName())) {
-				return false;
+				throw new ProfileException(
+						"Profile name cannot be same as any other profile name");
 			}
 		}
 
@@ -173,6 +189,26 @@ public class ProfileUtils {
 		}
 
 		return true;
+
+	}
+
+	public class ProfileException extends Exception {
+
+		String exceptionMessage;
+
+		public ProfileException() {
+			super();
+		}
+
+		public ProfileException(String exceptionMessage) {
+			super(exceptionMessage);
+			this.exceptionMessage = exceptionMessage;
+		}
+
+		@Override
+		public String getMessage() {
+			return exceptionMessage;
+		}
 
 	}
 }

@@ -35,7 +35,6 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 	private EditText name, version, model;
 	public static final File orig = new File("/system", "build.prop");
 	public static final File temp = new File("/system", "build1.prop");
-	// File temp = new File(MainActivity.this.getFilesDir(), "build.prop");
 
 	private Scanner scanner;
 	private List<String> lines;
@@ -72,15 +71,12 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 	}
 
 	private void showCurrentProperties() {
-		// TODO Auto-generated method stub
-
 		int flag = NO_OF_PROPERTIES;
 
 		if (isRooted) {
 			try {
 				dos.writeBytes("chmod 777 /system/build.prop\n");
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -113,7 +109,6 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -121,14 +116,12 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 			try {
 				dos.writeBytes("chmod 644 /system/build.prop\n");
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
 	}
 
 	private void backupOriginal() {
-		// TODO Auto-generated method stub
 		if (!(temp.exists())) {
 			try {
 				dos.writeBytes("mount -o rw,remount /system\n");
@@ -137,14 +130,8 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 				Toast.makeText(getActivity(), "Original file backuped",
 						Toast.LENGTH_SHORT).show();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				// Toast.makeText(getActivity(), e.toString(),
-				// Toast.LENGTH_SHORT)
-				// .show();
-				Toast.makeText(
-						getActivity(),
-						"Error Occured. Please restart the Application and try again.",
+				Toast.makeText(getActivity(), "Root permission required !!!",
 						Toast.LENGTH_SHORT).show();
 			}
 		}
@@ -156,8 +143,6 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 	}
 
 	private void restoreOriginal() {
-		// TODO Auto-generated method stub
-
 		if (temp.exists()) {
 			try {
 				dos.writeBytes("mount -o rw,remount /system\n");
@@ -172,14 +157,8 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 						getChildFragmentManager(), "reboot_dialog");
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				// Toast.makeText(getActivity(), e.toString(),
-				// Toast.LENGTH_SHORT)
-				// .show();
-				Toast.makeText(
-						getActivity(),
-						"Error Occured. Please restart the Application and try again.",
+				Toast.makeText(getActivity(), "Root permission required !!!",
 						Toast.LENGTH_SHORT).show();
 			}
 		}
@@ -192,7 +171,7 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 					Toast.LENGTH_SHORT).show();
 			return;
 		}
-		
+
 		backupOriginal();
 
 		try {
@@ -272,12 +251,7 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			// Toast.makeText(getActivity(), e.toString(),
-			// Toast.LENGTH_SHORT)
-			// .show();
-			Toast.makeText(
-					getActivity(),
-					"Error Occured. Please restart the Application and try again.",
+			Toast.makeText(getActivity(), "Root permission required !!!",
 					Toast.LENGTH_SHORT).show();
 		}
 
@@ -297,8 +271,6 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
 		switch (v.getId()) {
 
 		case R.id.button1:
@@ -323,7 +295,6 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 
 		if (isRooted) {
@@ -331,14 +302,8 @@ public class ChangeFragment extends Fragment implements OnClickListener {
 				dos.writeBytes("chmod 644 /system/build.prop\n"); /* build.prop */
 				dos.writeBytes("mount -o ro,remount /system\n"); // reboot
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				// Toast.makeText(getActivity(), e.toString(),
-				// Toast.LENGTH_SHORT)
-				// .show();
-				Toast.makeText(
-						getActivity(),
-						"Error Occured. Please restart the Application and try again.",
+				Toast.makeText(getActivity(), "Root permission required !!!",
 						Toast.LENGTH_SHORT).show();
 			}
 		}

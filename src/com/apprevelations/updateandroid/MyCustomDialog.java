@@ -36,7 +36,6 @@ public class MyCustomDialog extends DialogFragment {
 									dos.writeBytes("mount -o ro,remount /system\n");
 									dos.writeBytes("reboot\n");
 								} catch (IOException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 									Toast.makeText(getActivity(), e.toString(),
 											Toast.LENGTH_SHORT).show();
@@ -49,7 +48,6 @@ public class MyCustomDialog extends DialogFragment {
 								// User cancelled the dialog
 							}
 						});
-		// Create the AlertDialog object and return it
 		return builder.create();
 	}
 }
