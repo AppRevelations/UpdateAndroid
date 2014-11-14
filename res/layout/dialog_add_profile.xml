@@ -2,30 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="20dp" >
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
+        android:layout_height="wrap_content" 
         android:text="Add Profile"
         android:textColor="#6EC07C"
-        android:textSize="20dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#6EC07C" />
+        android:textSize="20dp" 
+        android:fontFamily="roboto-regular"
+        android:layout_marginLeft="7dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:layout_marginTop="15dp"
+        >
 
         <EditText
             android:id="@+id/dialog_profile_name"
@@ -34,7 +29,9 @@
             android:layout_marginBottom="1dp"
             android:fontFamily="sans-serif-light"
             android:hint="Profile Name"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColorHint="#bdbdbd" 
+            android:textColor="#bdbdbd"/>
 
         <EditText
             android:id="@+id/dialog_profile_build_id"
@@ -43,7 +40,9 @@
             android:layout_marginBottom="1dp"
             android:fontFamily="sans-serif-light"
             android:hint="Build Id"
-            android:singleLine="true" />
+            android:singleLine="true" 
+            android:textColorHint="#bdbdbd"
+            android:textColor="#bdbdbd"/>
 
         <EditText
             android:id="@+id/dialog_profile_version"
@@ -52,7 +51,9 @@
             android:layout_marginBottom="1dp"
             android:fontFamily="sans-serif-light"
             android:hint="Android Version"
-            android:singleLine="true" />
+            android:singleLine="true" 
+            android:textColorHint="#bdbdbd"
+            android:textColor="#bdbdbd"/>
 
         <EditText
             android:id="@+id/dialog_profile_model"
@@ -60,7 +61,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:hint="Model"
-            android:singleLine="true" />
+            android:singleLine="true" 
+            android:textColorHint="#bdbdbd"
+            android:textColor="#bdbdbd"/>
     </LinearLayout>
 
 </LinearLayout>
