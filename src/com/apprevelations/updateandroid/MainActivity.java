@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color
-				.parseColor("#007236")));
+				.parseColor("#4caf50")));
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mDemoCollectionPagerAdapter);
