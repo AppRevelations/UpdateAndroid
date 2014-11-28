@@ -1,62 +1,68 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scroll_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F0F0F0"
-    android:orientation="vertical"
-    tools:context="com.apprevelations.updateandroid.MainActivity" >
-
-    <RelativeLayout
+<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F0F0F0"
-        android:focusable="true"
-        android:focusableInTouchMode="true" >
+        android:background="#Ffffff"
+        xmlns:android="http://schemas.android.com/apk/res/android" >
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/editText2"
             android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="43dp"
+            android:layout_height="48dp"
+            android:layout_alignLeft="@+id/editText1"
+            android:layout_below="@+id/editText1"
+            android:layout_marginTop="14dp"
             android:background="@drawable/shape3"
             android:fontFamily="sans-serif-light"
-            android:hint="Build no"
-            android:padding="10dp"
+            android:hint="Android Version"
+            android:padding="12dp"
             android:singleLine="true"
-            android:textColorHint="#bdbdbd" />
+            android:textColorHint="#757575" />
+
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_alignLeft="@+id/editText2"
+            android:layout_below="@+id/editText2"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape3"
+            android:fontFamily="sans-serif-light"
+            android:hint="Model"
+            android:padding="12dp"
+            android:singleLine="true"
+            android:textColorHint="#757575" />
 
         <LinearLayout
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
+            android:layout_width="115dp"
             android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/editText3"
             android:layout_below="@+id/editText3"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="29dp"
+            android:layout_marginTop="38dp"
             android:background="@drawable/shape"
-            android:padding="10dp" >
+            android:padding="10dp" 
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Apply Changes"
+                android:text="Apply"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:fontFamily="roboto-regular" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
+            android:layout_width="115dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/button1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="21dp"
+            android:layout_alignLeft="@+id/editText3"
+            android:layout_alignTop="@+id/button1"
             android:background="@drawable/shape"
-            android:padding="10dp" >
+            android:padding="10dp"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/textView2"
@@ -65,35 +71,26 @@
                 android:layout_gravity="center"
                 android:text="Reset"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:fontFamily="roboto-regular" />
         </LinearLayout>
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/editText1"
             android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_alignLeft="@+id/editText1"
-            android:layout_below="@+id/editText1"
-            android:layout_marginTop="14dp"
+            android:layout_height="48dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="59dp"
             android:background="@drawable/shape3"
+            android:ems="10"
             android:fontFamily="sans-serif-light"
-            android:hint="Android Version"
-            android:padding="10dp"
+            android:hint="Build no"
+            android:padding="12dp"
             android:singleLine="true"
-            android:textColorHint="#bdbdbd" />
+            android:textColorHint="#757575" >
 
-        <EditText
-            android:id="@+id/editText3"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_alignLeft="@+id/editText2"
-            android:layout_below="@+id/editText2"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/shape3"
-            android:fontFamily="sans-serif-light"
-            android:hint="Model"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:textColorHint="#bdbdbd" />
+            <requestFocus />
+        </EditText>
+
     </RelativeLayout>
-</ScrollView>

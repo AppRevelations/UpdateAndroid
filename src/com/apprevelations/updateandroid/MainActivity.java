@@ -63,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
 
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color
 				.parseColor("#4caf50")));
 
